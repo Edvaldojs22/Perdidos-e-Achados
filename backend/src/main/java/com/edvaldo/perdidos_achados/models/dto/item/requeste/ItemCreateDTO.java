@@ -23,6 +23,6 @@ public class ItemCreateDTO {
      private String localRef;
 
     @NotNull(message = "Id do usuário autenticado é necessário")
-    private Integer usuarioId;
+    private Long usuarioId;
 
 }

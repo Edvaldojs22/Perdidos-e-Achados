@@ -1,4 +1,4 @@
-package com.edvaldo.perdidos_achados.models.dto.usuario.resquest;
+package com.edvaldo.perdidos_achados.models.dto.usuario.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
