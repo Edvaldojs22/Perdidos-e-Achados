@@ -1,13 +1,15 @@
-package com.edvaldo.perdidos_achados.controller;
+package com.edvaldo.perdidos_achados.controller.usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edvaldo.perdidos_achados.entity.Usuario;
-import com.edvaldo.perdidos_achados.models.dto.UsuarioDTO;
-import com.edvaldo.perdidos_achados.service.UsuarioService;
+import com.edvaldo.perdidos_achados.models.dto.usuario.response.UsuarioResponseDTO;
+import com.edvaldo.perdidos_achados.models.dto.usuario.resquest.UsuarioCreateDTO;
+import com.edvaldo.perdidos_achados.service.usuario.UsuarioService;
 
 import jakarta.validation.Valid;
 
@@ -23,7 +25,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("novo")
-    public ResponseEntity<UsuarioDTO> criar(@Valid @RequestBody UsuarioDTO dto){
+    public ResponseEntity<UsuarioResponseDTO> criar(@Valid @RequestBody UsuarioCreateDTO dto){
         Usuario usuario = new Usuario();
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
@@ -31,15 +33,12 @@ public class UsuarioController {
 
         Usuario salvo = usuarioService.cadastrar(usuario);
 
-        UsuarioDTO resposta = new UsuarioDTO();
+        UsuarioResponseDTO resposta = new UsuarioResponseDTO();
         resposta.setNome(salvo.getNome());
         resposta.setEmail(salvo.getEmail());
-        resposta.setSenha(salvo.getSenha());
-        
-        return ResponseEntity.ok(resposta);
+     
+         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
         
     }
-    
-
     
 }

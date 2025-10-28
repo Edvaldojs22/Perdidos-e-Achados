@@ -1,4 +1,4 @@
-package com.edvaldo.perdidos_achados.repository;
+package com.edvaldo.perdidos_achados.repository.usuario;
 
 import java.util.Optional;
 
