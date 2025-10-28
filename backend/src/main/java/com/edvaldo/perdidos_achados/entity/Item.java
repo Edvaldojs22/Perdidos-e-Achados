@@ -1,39 +1,43 @@
-package com.edvaldo.perdidos_achados.models;
+package com.edvaldo.perdidos_achados.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import javax.xml.crypto.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import org.hibernate.annotations.ManyToAny;
-
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ind;
 
-    @NotBlank(message = "Nome obrigatório")
     private String nome;
-
     private String descricao;
-
     private String imagemUrl;
-
     private LocalDate dataPostado;
-
     private Boolean entregue;
 
-    @ManyToAny
+    @CreationTimestamp
+    private LocalDateTime criadoEm;
+
+    @UpdateTimestamp
+    private LocalDateTime atualizadoEm;
+
+    @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Integer usuarioId;
+    private Usuario usuarioId;
     
 }
