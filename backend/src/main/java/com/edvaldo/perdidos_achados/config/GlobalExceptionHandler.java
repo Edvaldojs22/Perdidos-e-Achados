@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.edvaldo.perdidos_achados.exception.usuario.EmailJaCadastradoException;
+import com.edvaldo.perdidos_achados.exception.usuario.UsuarioComItensException;
+import com.edvaldo.perdidos_achados.exception.usuario.UsuarioNaoEncontradoException;
 
 
 
@@ -33,8 +35,18 @@ public class GlobalExceptionHandler  {
     public ResponseEntity<Map<String, String>> handleEmailDuplicado(EmailJaCadastradoException ex) {
         Map<String, String> erro = new HashMap<>();
         erro.put("email", ex.getMessage());
-         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+         return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
 
+    }
+
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
+    public ResponseEntity<String>handleUsuarioNaoEncontrado(UsuarioNaoEncontradoException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+     @ExceptionHandler(UsuarioComItensException.class)
+    public ResponseEntity<String>UsuarioComItensException(UsuarioComItensException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
     
 }
