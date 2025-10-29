@@ -30,6 +30,7 @@ public class Item {
     private String imagemUrl;
     private String categoria;
     private Boolean entregue = false;
+    private String cidade;
     private String localRef;
 
     @CreationTimestamp

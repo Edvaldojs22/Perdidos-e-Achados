@@ -12,6 +12,7 @@ public class ItemResponseDTO {
     private String categoria;
     private String imagemUrl;
     private String localRef;
+    private String cidade;
 
 
     private String nomePostador;

@@ -18,9 +18,11 @@ public class ItemCreateDTO {
     private String imagemUrl;
 
     private String categoria;
-    
-    @NotBlank(message = "Referência de onde encontrou é obrigatório")
-     private String localRef;
+
+    @NotBlank(message = "Cidade é obrigatório")
+    private String cidade;
+
+    private String localRef;
 
     @NotNull(message = "Id do usuário autenticado é necessário")
     private Long usuarioId;

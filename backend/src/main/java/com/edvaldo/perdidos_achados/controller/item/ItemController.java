@@ -24,7 +24,6 @@ public class ItemController {
     private ItemService itemService;
 
 
-
     @PostMapping("novo")
     public ResponseEntity<ItemResponseDTO>criarItem(@RequestBody @Valid ItemCreateDTO dto){
         Item itemSalvo = itemService.cadastrarItem(dto);
@@ -34,10 +33,10 @@ public class ItemController {
         responseDTO.setDescricao(dto.getDescricao());
         responseDTO.setImagemUrl(dto.getImagemUrl());
         responseDTO.setLocalRef(dto.getLocalRef());
+        responseDTO.setCidade(dto.getCidade());
         responseDTO.setId(itemSalvo.getId());
         responseDTO.setNomePostador(itemSalvo.getUsuario().getNome());
       
-
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
     
