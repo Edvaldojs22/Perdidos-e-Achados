@@ -29,18 +29,13 @@ public class UsuarioController {
 
     @PostMapping("novo")
     public ResponseEntity<UsuarioResponseDTO> criar(@Valid @RequestBody UsuarioCreateDTO dto){
-        Usuario usuario = new Usuario();
-        usuario.setNome(dto.getNome());
-        usuario.setEmail(dto.getEmail());
-        usuario.setSenha(dto.getSenha());
-
-        Usuario salvo = usuarioService.cadastrar(usuario);
+        Usuario salvo = usuarioService.cadastrar(dto);
 
         UsuarioResponseDTO resposta = new UsuarioResponseDTO();
         resposta.setNome(salvo.getNome());
         resposta.setEmail(salvo.getEmail());
      
-         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
         
     }
     
@@ -48,6 +43,5 @@ public class UsuarioController {
     public ResponseEntity<Void>deletarUsuario(@PathVariable Long id ){
         usuarioService.deletarPorId(id);
         return ResponseEntity.noContent().build();
-
     }
 }

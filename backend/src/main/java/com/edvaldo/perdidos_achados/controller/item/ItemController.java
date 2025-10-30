@@ -1,8 +1,14 @@
 package com.edvaldo.perdidos_achados.controller.item;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,4 +46,11 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
     
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void>deletarItem(@PathVariable Long id, Authentication authenticator){
+        String emailLogado = authenticator.getName();
+
+        itemService.deletarPorId(id,emailLogado);
+        return ResponseEntity.noContent().build();
+    }
 }

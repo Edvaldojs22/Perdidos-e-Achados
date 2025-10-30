@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.edvaldo.perdidos_achados.exception.item.AcessoNegadoException;
+import com.edvaldo.perdidos_achados.exception.item.ItemNaoEncontradoException;
 import com.edvaldo.perdidos_achados.exception.usuario.EmailJaCadastradoException;
 import com.edvaldo.perdidos_achados.exception.usuario.UsuarioComItensException;
 import com.edvaldo.perdidos_achados.exception.usuario.UsuarioNaoEncontradoException;
@@ -48,5 +50,15 @@ public class GlobalExceptionHandler  {
     public ResponseEntity<String>UsuarioComItensException(UsuarioComItensException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(ItemNaoEncontradoException.class)
+    public ResponseEntity<String>ItemNaoEncontradoException(ItemNaoEncontradoException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    };
+
+      @ExceptionHandler(AcessoNegadoException.class)
+    public ResponseEntity<String>AcessoNegadoException(AcessoNegadoException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    };
     
 }
