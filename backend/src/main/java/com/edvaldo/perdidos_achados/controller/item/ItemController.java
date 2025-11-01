@@ -1,9 +1,5 @@
 package com.edvaldo.perdidos_achados.controller.item;
 
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -23,18 +19,23 @@ import com.edvaldo.perdidos_achados.service.item.ItemService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/items")
+@RequestMapping("/api/items")
 public class ItemController {
 
-    @Autowired
-    private ItemService itemService;
+
+    private final ItemService itemService;
+
+    public ItemController(ItemService itemService){
+        this.itemService = itemService;
+    }
 
 
-    @PostMapping("novo")
+    @PostMapping("/novo")
     public ResponseEntity<ItemResponseDTO>criarItem(@RequestBody @Valid ItemCreateDTO dto){
         Item itemSalvo = itemService.cadastrarItem(dto);
 
         ItemResponseDTO responseDTO = new ItemResponseDTO();
+        responseDTO.setNome(dto.getNome());
         responseDTO.setCategoria(dto.getCategoria());
         responseDTO.setDescricao(dto.getDescricao());
         responseDTO.setImagemUrl(dto.getImagemUrl());

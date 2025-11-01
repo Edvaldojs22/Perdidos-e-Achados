@@ -1,4 +1,4 @@
-package com.edvaldo.perdidos_achados.config;
+package com.edvaldo.perdidos_achados.exception;
 
 import java.util.HashMap;
 import java.util.Map;

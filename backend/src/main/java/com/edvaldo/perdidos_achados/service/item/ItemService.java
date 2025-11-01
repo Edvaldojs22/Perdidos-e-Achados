@@ -1,6 +1,6 @@
 package com.edvaldo.perdidos_achados.service.item;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.edvaldo.perdidos_achados.entity.Item;
@@ -9,19 +9,26 @@ import com.edvaldo.perdidos_achados.exception.item.AcessoNegadoException;
 import com.edvaldo.perdidos_achados.exception.item.ItemNaoEncontradoException;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemCreateDTO;
 import com.edvaldo.perdidos_achados.repository.item.ItemRepository;
-import com.edvaldo.perdidos_achados.repository.usuario.UsuarioRepositoy;
 
+import jakarta.validation.Valid;
 @Service
 public class ItemService {
-    @Autowired
-    private  ItemRepository itemRepository;
 
-    @Autowired
-    private UsuarioRepositoy usuarioRepositoy;
+    private final  ItemRepository itemRepository;
 
-    public Item cadastrarItem(ItemCreateDTO dto){
-        Usuario usuario = usuarioRepositoy.findById(dto.getUsuarioId())
-        .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    public ItemService(ItemRepository itemRepository){
+        this.itemRepository = itemRepository;
+    }
+
+
+    public Item cadastrarItem(@Valid ItemCreateDTO dto){
+        Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authenticacao == null || authenticacao.getPrincipal() instanceof String && authenticacao.getPrincipal().equals("anonymousUser")){
+            throw new AcessoNegadoException("Acesso negado. Usuário não autenticado.");
+        }
+        
+        Usuario usuario = (Usuario) authenticacao.getPrincipal();
         Item item = new Item();
         item.setNome(dto.getNome());
         item.setDescricao(dto.getDescricao());
