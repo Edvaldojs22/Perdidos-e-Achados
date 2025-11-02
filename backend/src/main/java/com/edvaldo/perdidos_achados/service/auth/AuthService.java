@@ -27,6 +27,7 @@ public class AuthService {
         Usuario usuario = new Usuario();
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
+        usuario.setContato(dto.getContato());
        
         String senhaCriptografada = passwordEncoder.encode(dto.getSenha());
         usuario.setSenha(senhaCriptografada);
@@ -34,6 +35,4 @@ public class AuthService {
         return usuarioRepositoy.save(usuario);
     }
   
-   
-    
 }

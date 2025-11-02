@@ -6,12 +6,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edvaldo.perdidos_achados.entity.Item;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemCreateDTO;
+import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemEditDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.response.ItemResponseDTO;
 import com.edvaldo.perdidos_achados.service.item.ItemService;
 
@@ -28,7 +30,6 @@ public class ItemController {
     public ItemController(ItemService itemService){
         this.itemService = itemService;
     }
-
 
     @PostMapping("/novo")
     public ResponseEntity<ItemResponseDTO>criarItem(@RequestBody @Valid ItemCreateDTO dto){
@@ -49,12 +50,33 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    // @PatchMapping("/editar/{id}")
-    // public ResponseEntity<Item>editar(@PathVariable Long id, Authentication authentication)
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<ItemEditDTO>editar(@PathVariable Long id, @RequestBody @Valid ItemEditDTO dto, Authentication authentication){
+        Item itemEditado = itemService.editarItemPorId(id,dto );
+        
+        ItemEditDTO responseItem = new ItemEditDTO();
+        responseItem.setNome(itemEditado.getNome());
+        responseItem.setCategoria(itemEditado.getCategoria());
+        responseItem.setCidade(itemEditado.getCidade());
+        responseItem.setContato(itemEditado.getContato());
+        responseItem.setDescricao(itemEditado.getDescricao());
+        responseItem.setImagemUrl(itemEditado.getImagemUrl());
+        responseItem.setLocalRef(itemEditado.getLocalRef());
+        responseItem.setStatus(itemEditado.getStatus());
+      
+        return ResponseEntity.ok(responseItem);
+    }
     
     @DeleteMapping("{id}")
     public ResponseEntity<Void>deletar(@PathVariable Long id, Authentication authentication) {
         itemService.deletarItemPorId(id);
         return ResponseEntity.noContent().build();
-}
+    }
+
+    @PutMapping("/achado/{id}")
+    public ResponseEntity<String>confirmarRecuperacao(@PathVariable Long id, Authentication authentication){
+        String mensagem = itemService.confirmarRecuperacaoDoItem(id);
+        return ResponseEntity.ok(mensagem);
+    }
+
 }

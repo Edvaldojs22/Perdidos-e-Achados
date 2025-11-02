@@ -55,26 +55,42 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
-    public Item editarItemPorId(Long id, ItemEditDTO dto){
+    public Item editarItemPorId(Long id, @Valid ItemEditDTO dto){
         Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
-
         Usuario usuario = (Usuario) authenticacao.getPrincipal();
+
         Item item = itemRepository.findById(id)
             .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
 
         if(!item.getUsuario().getId().equals(usuario.getId())){
                 throw new AcessoNegadoException("Você não tem permissão para excluir esse item");
         }
-        if(dto.getNome()  != null) item.setNome(dto.getNome());
-        if(dto.getDescricao()  != null) item.setDescricao(dto.getDescricao());
-        if(dto.getImagemUrl()  != null) item.setImagemUrl(dto.getImagemUrl());
-        if(dto.getCategoria()  != null) item.setCategoria(dto.getCategoria());
-        if(dto.getStatus()  != null) item.setStatus(dto.getStatus());
-        if(dto.getCidade()  != null) item.setCidade(dto.getCidade());
-        if(dto.getLocalRef()  != null) item.setLocalRef(dto.getLocalRef());
-        if(dto.getContato()  != null) item.setContato(dto.getContato());
+        if (dto.getNome() != null) item.setNome(dto.getNome());
+        if (dto.getDescricao() != null) item.setDescricao(dto.getDescricao());
+        if (dto.getImagemUrl() != null) item.setImagemUrl(dto.getImagemUrl());
+        if (dto.getCategoria() != null) item.setCategoria(dto.getCategoria());
+        if (dto.getStatus() != null) item.setStatus(dto.getStatus());
+        if (dto.getCidade() != null) item.setCidade(dto.getCidade());
+        if (dto.getLocalRef() != null) item.setLocalRef(dto.getLocalRef());
+        if (dto.getContato() != null) item.setContato(dto.getContato());
 
         return itemRepository.save(item);
     }
-}
 
+    public String confirmarRecuperacaoDoItem(Long id){
+        Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuario = (Usuario) authenticacao.getPrincipal();
+
+           Item item = itemRepository.findById(id)
+            .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
+
+              if(!item.getUsuario().getId().equals(usuario.getId())){
+                throw new AcessoNegadoException("Você não tem permissão para excluir esse item");
+        }
+
+        item.setStatus("Encontrado");
+        itemRepository.save(item);
+        return "Parabéns o item foi Encontrado";
+    }
+
+}

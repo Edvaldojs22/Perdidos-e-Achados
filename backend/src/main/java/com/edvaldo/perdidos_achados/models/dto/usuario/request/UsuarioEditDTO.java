@@ -1,31 +1,24 @@
 package com.edvaldo.perdidos_achados.models.dto.usuario.request;
 
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UsuarioCreateDTO {
-    @NotBlank(message = "Nome é obrigatório")
+public class UsuarioEditDTO {
     private String nome;
-
+    
+    
     @Email(message = "Email inválido")
-    @NotBlank(message = "Email é obrigatório")
     private String email;
-
-
+    
     @NotBlank(message = "Numero de celular é obrigatório")
     @Pattern(
     regexp = "^\\(?\\d{2}\\)?\\s?9\\d{4}-?\\d{4}$",
     message = "Formato inválido. Use o padrão (XX) 9XXXX-XXXX")
     private String contato;
-    
-    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
-    @NotBlank(message = "Senha é obrigatória")
-    private String senha;
-
 }
