@@ -1,7 +1,6 @@
 package com.edvaldo.perdidos_achados.models.dto.item.requeste;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,22 +8,25 @@ import lombok.Setter;
 @Setter
 public class ItemCreateDTO {
 
-    @NotBlank(message = "Nome é obrigatório")
-    private String nome;
 
     private String descricao;
+    private String categoria;
+    private String localRef;
+
+    @NotBlank(message = "Nome é obrigatório")
+    private String nome;
 
     @NotBlank(message = "Imagem ou url de imagem obrigatório")
     private String imagemUrl;
 
-    private String categoria;
-
     @NotBlank(message = "Cidade é obrigatório")
     private String cidade;
 
-    private String localRef;
+    @NotBlank(message = "Contato é obrigatório")
+    private String contato;
+    
+    @NotBlank(message = "Status do item é obrigatório")
+    private String status;
 
-    @NotNull(message = "Id do usuário autenticado é necessário")
-    private Long usuarioId;
 
 }

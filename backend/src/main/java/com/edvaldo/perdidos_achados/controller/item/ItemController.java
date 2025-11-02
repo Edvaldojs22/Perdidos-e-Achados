@@ -35,23 +35,26 @@ public class ItemController {
         Item itemSalvo = itemService.cadastrarItem(dto);
 
         ItemResponseDTO responseDTO = new ItemResponseDTO();
-        responseDTO.setNome(dto.getNome());
-        responseDTO.setCategoria(dto.getCategoria());
-        responseDTO.setDescricao(dto.getDescricao());
-        responseDTO.setImagemUrl(dto.getImagemUrl());
-        responseDTO.setLocalRef(dto.getLocalRef());
-        responseDTO.setCidade(dto.getCidade());
         responseDTO.setId(itemSalvo.getId());
+        responseDTO.setNome(itemSalvo.getNome());
+        responseDTO.setDescricao(itemSalvo.getDescricao());
+        responseDTO.setImagemUrl(itemSalvo.getImagemUrl());
+        responseDTO.setCategoria(itemSalvo.getCategoria());
+        responseDTO.setCidade(itemSalvo.getCidade());
+        responseDTO.setContato(itemSalvo.getContato());
+        responseDTO.setStatus(itemSalvo.getStatus());
+        responseDTO.setLocalRef(itemSalvo.getLocalRef());
         responseDTO.setNomePostador(itemSalvo.getUsuario().getNome());
       
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
+
+    // @PatchMapping("/editar/{id}")
+    // public ResponseEntity<Item>editar(@PathVariable Long id, Authentication authentication)
     
     @DeleteMapping("{id}")
-    public ResponseEntity<Void>deletarItem(@PathVariable Long id, Authentication authenticator){
-        String emailLogado = authenticator.getName();
-
-        itemService.deletarPorId(id,emailLogado);
+    public ResponseEntity<Void>deletar(@PathVariable Long id, Authentication authentication) {
+        itemService.deletarItemPorId(id);
         return ResponseEntity.noContent().build();
-    }
+}
 }

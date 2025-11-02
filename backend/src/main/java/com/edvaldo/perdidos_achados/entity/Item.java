@@ -29,9 +29,10 @@ public class Item {
     private String descricao;
     private String imagemUrl;
     private String categoria;
-    private Boolean entregue = false;
+    private String status;
     private String cidade;
     private String localRef;
+    private String contato;
 
     @CreationTimestamp
     private LocalDateTime dataPostado;

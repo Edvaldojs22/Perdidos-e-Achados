@@ -71,8 +71,7 @@ public class AutenticacaoController {
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha inválidos");
         }
-       
-
+    
     }
 }
 

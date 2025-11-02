@@ -13,6 +13,8 @@ public class ItemResponseDTO {
     private String imagemUrl;
     private String localRef;
     private String cidade;
+    private String contato;
+    private String status;
 
 
     private String nomePostador;
