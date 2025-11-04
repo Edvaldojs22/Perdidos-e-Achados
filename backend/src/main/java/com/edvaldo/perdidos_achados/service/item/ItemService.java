@@ -1,4 +1,8 @@
 package com.edvaldo.perdidos_achados.service.item;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -9,6 +13,8 @@ import com.edvaldo.perdidos_achados.exception.item.AcessoNegadoException;
 import com.edvaldo.perdidos_achados.exception.item.ItemNaoEncontradoException;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemCreateDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemEditDTO;
+import com.edvaldo.perdidos_achados.models.dto.item.response.ItemCompletoDTO;
+import com.edvaldo.perdidos_achados.models.dto.item.response.ItemPublicoDTO;
 import com.edvaldo.perdidos_achados.repository.item.ItemRepository;
 
 import jakarta.validation.Valid;
@@ -92,5 +98,44 @@ public class ItemService {
         itemRepository.save(item);
         return "Parabéns o item foi Encontrado";
     }
+
+  public List<Object> todosItens() {
+    Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
+    List<Item> itens = itemRepository.findAll();
+    System.out.println("Itens encontrados: " + itens.size());
+
+
+    boolean autenticado = autenticacao != null 
+        && autenticacao.isAuthenticated() 
+        && !(autenticacao instanceof AnonymousAuthenticationToken);
+
+    if (autenticado) {
+        return itens.stream()
+            .map(item -> ItemCompletoDTO.builder()
+                .id(item.getId())
+                .nome(item.getNome())
+                .descricao(item.getDescricao())
+                .imagemUrl(item.getImagemUrl())
+                .categoria(item.getCategoria())
+                .status(item.getStatus())
+                .cidade(item.getCidade())
+                .localRef(item.getLocalRef())
+                .contato(item.getContato())
+                .dataPostado(item.getDataPostado())
+                .atualizadoEm(item.getAtualizadoEm())
+                .usuarioId(item.getUsuario().getId())
+                .build())
+            .collect(Collectors.toList());
+    } else {
+        return itens.stream()
+            .map(item -> ItemPublicoDTO.builder()
+                .nome(item.getNome())
+                .imagemUrl(item.getImagemUrl())
+                .cidade(item.getCidade())
+                .dataPostado(item.getDataPostado())
+                .build())
+            .collect(Collectors.toList());
+    }
+}
 
 }

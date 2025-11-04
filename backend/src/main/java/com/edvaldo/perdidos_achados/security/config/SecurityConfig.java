@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/cadastrar").permitAll()
+                    .requestMatchers(HttpMethod.GET,"/api/items").permitAll()
                     .anyRequest().authenticated()
                 )
                 .exceptionHandling(handling -> handling                    
