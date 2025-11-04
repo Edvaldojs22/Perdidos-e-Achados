@@ -1,0 +1,12 @@
+.boxScroll {
+  border: solid 2px;
+  padding: 7px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.boxItens {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
