@@ -15,7 +15,9 @@ const ItemCard = ({ imageUrl, nome, cidade, postado }) => {
           <p>{cidade}</p>
         </div>
       </div>
-      <p className={styles.dataPostado}>{postado}</p>
+      <p className={styles.dataPostado}>
+        {new Date(postado).toLocaleDateString("pt-BR")}
+      </p>
       <img className={styles.imgILupa} src={images.lupa} alt="" />
     </div>
   );

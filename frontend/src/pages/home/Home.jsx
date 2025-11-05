@@ -1,70 +1,106 @@
+import { useEffect, useState } from "react";
 import { images } from "../../assets";
 import ItemCard from "../../components/cardItem/ItemCard";
 import style from "./Home.module.css";
 import { BsSearch } from "react-icons/bs";
+import { getAllItens } from "../../api/itemApi";
 
 const Home = () => {
+  const [itens, setItens] = useState([]);
+  const cidadesUnicas = [...new Set(itens.map((item) => item.cidade))];
+
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState(null);
+
+  const [filtroNome, setFiltroNome] = useState("");
+  const [filtroCidade, setFiltroCidade] = useState("");
+
+  const itensFiltrados = itens.filter((item) => {
+    const nomeMatch = item.nome
+      .toLowerCase()
+      .includes(filtroNome.toLowerCase());
+    const cidadeMatch = filtroCidade === "" || item.cidade === filtroCidade;
+    return nomeMatch && cidadeMatch;
+  });
+
+  useEffect(() => {
+    const fetchItens = async () => {
+      try {
+        const response = await getAllItens();
+        setItens(response.data);
+      } catch (err) {
+        console.error("Erro ao buscar itens:", err);
+        setErro("Não foi possível carregar os itens.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItens();
+  }, []);
+
   return (
     <main>
-      <section>
-        <header>
-          <img src="" alt="" />
-          <h1>Peridos e Achados</h1>
-        </header>
-
+      <header>
+        <h1>Perdidos e Achados</h1>
         <div className={style.box_input}>
-          <BsSearch />
-          <input type="text" placeholder="Nome" name="" id="" />
-          <img src="" alt="" />
+          <BsSearch className={style.icon_search} />
+          <input
+            type="text"
+            placeholder="Nome"
+            value={filtroNome}
+            onChange={(e) => setFiltroNome(e.target.value)}
+          />
+          <img
+            className={style.sherdogSmell}
+            src={images.sherdogSmell}
+            alt=""
+          />
+          <img className={style.sherdog} src={images.sherdog} alt="" />
         </div>
-      </section>
+      </header>
+      <h2>Items Perdidos</h2>
 
       <div>
-        <h2>Items Perdidos</h2>
-        <select name="Cidade" id="cidade">
-          <option value="">Cidade</option>
-          <option value="">Campina</option>
-          <option value="">RJ</option>
+        <select
+          name="Cidade"
+          id="cidade"
+          value={filtroCidade}
+          onChange={(e) => setFiltroCidade(e.target.value)}
+        >
+          <option value="">Selecione uma cidade</option>
+          {cidadesUnicas.map((cidade) => (
+            <option key={cidade} value={cidade}>
+              {cidade}
+            </option>
+          ))}
         </select>
       </div>
 
       <section className={style.boxScroll}>
         <div className={style.boxItens}>
-          <ItemCard
-            imageUrl="https://www.ahnegao.com.br/wp-content/uploads/2025/02/imgaleat-6jx-3.jpg"
-            cidade="Riacho"
-            nome="Gato Mc"
-            postado="02/02/2222"
-          />
-          <ItemCard
-            imageUrl="https://www.ahnegao.com.br/wp-content/uploads/2025/02/imgaleat-6jx-3.jpg"
-            cidade="Riacho"
-            nome="Gato Mc"
-            postado="02/02/2222"
-          />
-          <ItemCard
-            imageUrl="https://www.ahnegao.com.br/wp-content/uploads/2025/02/imgaleat-6jx-3.jpg"
-            cidade="Riacho"
-            nome="Gato Mc"
-            postado="02/02/2222"
-          />
-          <ItemCard
-            imageUrl="https://www.ahnegao.com.br/wp-content/uploads/2025/02/imgaleat-6jx-3.jpg"
-            cidade="Riacho"
-            nome="Gato Mc"
-            postado="02/02/2222"
-          />
-          <ItemCard
-            imageUrl="https://www.ahnegao.com.br/wp-content/uploads/2025/02/imgaleat-6jx-3.jpg"
-            cidade="Riacho"
-            nome="Gato Mc"
-            postado="02/02/2222"
-          />
+          {loading ? (
+            <p>Procurando itens...</p>
+          ) : erro ? (
+            <p className={style.erro}>{erro}</p>
+          ) : itensFiltrados.length === 0 ? (
+            <p className={style.vazio}>Nenhum item encontrado.</p>
+          ) : (
+            itensFiltrados.map((item) => (
+              <ItemCard
+                key={item.id}
+                nome={item.nome}
+                imageUrl={item.imagemUrl}
+                cidade={item.cidade}
+                postado={item.dataPostado}
+              />
+            ))
+          )}
         </div>
       </section>
 
       <button>Carregar</button>
-      <img src={images.box} alt="Novo item" />
+      <img className={style.iconBox} src={images.box} alt="Novo item" />
     </main>
   );
 };

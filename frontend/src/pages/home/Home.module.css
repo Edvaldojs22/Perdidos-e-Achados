@@ -1,12 +1,148 @@
+main {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+header {
+  background: var(--laranja-queimado);
+  text-align: center;
+  color: var(--branco-puro);
+  height: 100px;
+  position: relative;
+  margin-bottom: 40px;
+  padding-top: 20px;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+header div {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  bottom: -30px;
+  display: flex;
+  align-items: center;
+}
+
+header input {
+  width: 380px;
+  border: solid 2px var(--laranja-queimado);
+  border-radius: 15px;
+  padding-top: 10px;
+  padding-left: 65px;
+  height: 60px;
+  outline: none;
+  font-size: 1.2rem;
+}
+
+header input::placeholder {
+  color: #acacac;
+  font-size: 1.2rem;
+}
+
 .boxScroll {
-  border: solid 2px;
   padding: 7px;
-  max-height: 500px;
+  height: auto;
+  height: 70vh;
+  min-height: 200px;
   overflow-y: auto;
+
+  margin-bottom: 10px;
+}
+.boxScroll::-webkit-scrollbar {
+  height: 8px;
+}
+.boxScroll::-webkit-scrollbar {
+  width: 6px; /* Scroll vertical */
+}
+
+.boxScroll::-webkit-scrollbar-thumb {
+  background-color: var(--laranja-queimado);
+  border-radius: 10px;
+  width: 2px;
 }
 
 .boxItens {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
+}
+
+.sherdogSmell,
+.sherdog,
+.icon_search,
+.iconBox {
+  position: absolute;
+}
+.sherdog {
+  width: 45px;
+  transform: scaleX(-1);
+  top: -55px;
+  left: 10px;
+}
+.sherdogSmell {
+  width: 65px;
+  bottom: 0;
+  right: 10px;
+}
+
+.icon_search {
+  font-size: 30px;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(211, 211, 211);
+}
+
+main h2 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+main > div {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+main select {
+  appearance: none;
+  width: calc(100% - 17px);
+  border: none;
+  border-radius: 10px;
+  padding: 0 10px;
+  height: 40px;
+  color: rgb(169, 169, 169);
+  font-size: 1.2rem;
+  outline: none;
+}
+
+main option {
+  color: black;
+}
+
+main button {
+  background: var(--laranja-queimado);
+  border: none;
+  padding: 10px 0;
+  width: 100px;
+  border-radius: 20px;
+  color: var(--branco-puro);
+  font-weight: 600;
+  align-self: center;
+  margin-bottom: 10px;
+}
+
+.iconBox {
+  bottom: 5px;
+  right: 20px;
 }
