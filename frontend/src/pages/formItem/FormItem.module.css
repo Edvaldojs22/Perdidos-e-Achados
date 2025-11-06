@@ -1,0 +1,68 @@
+.formItem {
+  padding-top: 20px;
+}
+
+.formItem > div {
+  border: dotted #0077b6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 200px;
+  color: #0077b6;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: var(--branco-puro);
+  margin: 0 auto;
+  border-radius: 20px;
+  position: relative;
+}
+
+.formItem input[type="file"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.box_iconText {
+  text-align: center;
+}
+
+.sherdogSelf {
+  width: 80px;
+}
+
+.imagemPreview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 20px;
+}
+
+.campoCidade {
+  position: relative;
+  width: 300px;
+}
+
+.listaSugestoes {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  z-index: 10;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.listaSugestoes li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.listaSugestoes li:hover {
+  background: #0077b6;
+  color: #fff;
+}

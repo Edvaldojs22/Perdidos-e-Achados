@@ -11,6 +11,6 @@ export const login = async (email, senha) => {
     return respose.data;
   } catch (error) {
     console.log(error);
-    throw error.respose;
+    throw error.response;
   }
 };
