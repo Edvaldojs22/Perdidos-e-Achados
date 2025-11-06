@@ -1,4 +1,5 @@
 package com.edvaldo.perdidos_achados.service.item;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,39 +8,43 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+
 import com.edvaldo.perdidos_achados.entity.Item;
 import com.edvaldo.perdidos_achados.entity.Usuario;
 import com.edvaldo.perdidos_achados.exception.item.AcessoNegadoException;
 import com.edvaldo.perdidos_achados.exception.item.ItemNaoEncontradoException;
-import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemCreateDTO;
+import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemFormDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemEditDTO;
-import com.edvaldo.perdidos_achados.models.dto.item.response.ItemCompletoDTO;
+import com.edvaldo.perdidos_achados.models.dto.item.response.ItemResponseCompletoDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.response.ItemPublicoDTO;
 import com.edvaldo.perdidos_achados.repository.item.ItemRepository;
+import com.edvaldo.perdidos_achados.service.image.ImagemService;
 
 import jakarta.validation.Valid;
 @Service
 public class ItemService {
 
     private final  ItemRepository itemRepository;
+     private final ImagemService imagemService;
 
-    public ItemService(ItemRepository itemRepository){
+    public ItemService(ItemRepository itemRepository,ImagemService imagemService){
         this.itemRepository = itemRepository;
+        this.imagemService = imagemService;
     }
 
 
-    public Item cadastrarItem(@Valid ItemCreateDTO dto){
+    public Item cadastrarItem(@Valid ItemFormDTO dto) throws IOException{
+        String imagemUrl = imagemService.salvarImagemLocal(dto.getImagem());
         Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) authenticacao.getPrincipal();
         
         Item item = new Item();
         item.setNome(dto.getNome());
         item.setDescricao(dto.getDescricao());
-        item.setImagemUrl(dto.getImagemUrl());
+        item.setImagemUrl(imagemUrl);
         item.setCategoria(dto.getCategoria());
         item.setCidade(dto.getCidade());
         item.setContato(dto.getContato());
-        item.setStatus(dto.getStatus());
         item.setLocalRef(dto.getLocalRef());
         item.setUsuario(usuario);
 
@@ -61,7 +66,7 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
-    public Item editarItemPorId(Long id, @Valid ItemEditDTO dto){
+    public Item editarItemPorId(Long id, @Valid ItemEditDTO dto) throws IOException{
         Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) authenticacao.getPrincipal();
 
@@ -73,12 +78,17 @@ public class ItemService {
         }
         if (dto.getNome() != null) item.setNome(dto.getNome());
         if (dto.getDescricao() != null) item.setDescricao(dto.getDescricao());
-        if (dto.getImagemUrl() != null) item.setImagemUrl(dto.getImagemUrl());
         if (dto.getCategoria() != null) item.setCategoria(dto.getCategoria());
         if (dto.getStatus() != null) item.setStatus(dto.getStatus());
         if (dto.getCidade() != null) item.setCidade(dto.getCidade());
         if (dto.getLocalRef() != null) item.setLocalRef(dto.getLocalRef());
         if (dto.getContato() != null) item.setContato(dto.getContato());
+
+         // Se uma nova imagem foi enviada, salva e atualiza a URL
+        if (dto.getImagem() != null && !dto.getImagem().isEmpty()) {
+        String novaImagemUrl = imagemService.salvarImagemLocal(dto.getImagem());
+        item.setImagemUrl(novaImagemUrl);
+     }
 
         return itemRepository.save(item);
     }
@@ -111,7 +121,7 @@ public class ItemService {
 
     if (autenticado) {
         return itens.stream()
-            .map(item -> ItemCompletoDTO.builder()
+            .map(item -> ItemResponseCompletoDTO.builder()
                 .id(item.getId())
                 .nome(item.getNome())
                 .descricao(item.getDescricao())
@@ -137,5 +147,6 @@ public class ItemService {
             .collect(Collectors.toList());
     }
 }
+
 
 }

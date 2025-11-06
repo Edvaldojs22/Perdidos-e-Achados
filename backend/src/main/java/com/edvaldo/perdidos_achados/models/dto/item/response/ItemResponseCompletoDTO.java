@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemCompletoDTO  {
+public class ItemResponseCompletoDTO  {
     private long id;
     private String nome;
     private String descricao;

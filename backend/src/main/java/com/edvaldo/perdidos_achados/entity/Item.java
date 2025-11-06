@@ -28,7 +28,7 @@ public class Item {
     private String descricao;
     private String imagemUrl;
     private String categoria;
-    private String status;
+    private String status = "PERDIDO";
     private String cidade;
     private String localRef;
     private String contato;
