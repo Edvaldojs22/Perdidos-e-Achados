@@ -6,7 +6,7 @@ import { createItem } from "../../api/itemApi";
 const FormItem = () => {
   const inputRef = useRef(null);
   const [previewImg, setPreviewImg] = useState(null);
-  const [cidade, setCidade] = useState("");
+  const [setor, setSetor] = useState("");
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -37,9 +37,9 @@ const FormItem = () => {
     const formData = new FormData();
     formData.append("nome", nome);
     formData.append("descricao", descricao);
-    formData.append("imagem", imagem); // arquivo
+    formData.append("imagem", imagem);
     formData.append("categoria", categoria);
-    formData.append("cidade", cidade);
+    formData.append("setor ", setor);
     formData.append("localRef", localRef);
     formData.append("contato", telefone);
 
@@ -103,7 +103,7 @@ const FormItem = () => {
             name="pistaDescrição"
             type="text"
             required
-            placeholder="Ex: Cor, marca, tamanho"
+            placeholder="Ex: Cor, Marca, Tamanho"
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
           />
@@ -122,24 +122,36 @@ const FormItem = () => {
           </select>
         </div>
         <div>
-          <label htmlFor="pistaCidade">Cidade:</label>
-          <input
-            id="pistaCidade"
-            name="pistaCidade"
-            type="text"
-            placeholder="Digite o nome da cidade"
-            value={cidade}
-            onChange={(e) => setCidade(e.target.value)}
-          />
+          <label htmlFor="pistaSetor">Setor:</label>
+          <select
+            id="setor"
+            name="setor"
+            onChange={(e) => setSetor(e.target.value)}
+          >
+            <option value=""> Escolha um setor </option>
+            <option value="checkin">Área de Check-in</option>
+            <option value="embarque">Área de Embarque</option>
+            <option value="desembarque">Área de Desembarque</option>
+            <option value="seguranca">Área de Segurança</option>
+            <option value="alimentacao">
+              Praça de Alimentação / Restaurantes
+            </option>
+            <option value="lojas">Lojas / Duty Free</option>
+            <option value="banheiros">Banheiros</option>
+            <option value="estacionamento">Estacionamento</option>
+            <option value="entrada">Área Externa / Entrada do Aeroporto</option>
+            <option value="salas_vip">Salas VIP / Salas de Espera</option>
+            <option value="achados_perdidos">Achados e Perdidos</option>
+          </select>
         </div>
 
         <div>
-          <label htmlFor="pistaLocalReferencia">Pista Local Referência:</label>
+          <label htmlFor="pistaReferencia">Pista Referência:</label>
           <input
             name="pistaLocalReferencia"
             type="text"
             required
-            placeholder="Ex: Perto da escola"
+            placeholder="Ex: Perto da escada"
             value={localRef}
             onChange={(e) => setLocalRef(e.target.value)}
           />
@@ -157,7 +169,12 @@ const FormItem = () => {
         </div>
       </section>
 
-      <button type="submit">Cadastrar</button>
+      <div>
+        <button className={style.bnt_submit} type="submit">
+          Postar
+        </button>
+        <img className={style.sherdogForm} src={images.sherdogForm} alt="" />
+      </div>
     </form>
   );
 };

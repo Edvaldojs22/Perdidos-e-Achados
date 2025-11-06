@@ -6,7 +6,7 @@ main {
 }
 
 header {
-  background: var(--laranja-queimado);
+  background-color: var(--laranja-queimado);
   text-align: center;
   color: var(--branco-puro);
   height: 100px;
