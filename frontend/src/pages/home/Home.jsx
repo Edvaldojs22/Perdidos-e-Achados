@@ -79,6 +79,7 @@ const Home = () => {
 
       <section className={style.boxScroll}>
         <div className={style.boxItens}>
+          {console.log(itensFiltrados)}
           {loading ? (
             <p>Procurando itens...</p>
           ) : erro ? (
@@ -90,7 +91,7 @@ const Home = () => {
               <ItemCard
                 key={item.id}
                 nome={item.nome}
-                imageUrl={item.imagemUrl}
+                imageUrl={item.imageUrl}
                 cidade={item.cidade}
                 postado={item.dataPostado}
               />

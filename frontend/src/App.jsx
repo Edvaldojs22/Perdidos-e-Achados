@@ -5,6 +5,7 @@ import Home from "./pages/home/Home";
 import PrivateRoute from "./components/privateRoute/PrivateRoute ";
 import Login from "./pages/login/Login";
 import Perfil from "./pages/perfil/Perfil";
+import FormItem from "./pages/formItem/FormItem";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
+        <Route path="/novo-item" element={<FormItem />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/perfil" element={<Perfil />} />
