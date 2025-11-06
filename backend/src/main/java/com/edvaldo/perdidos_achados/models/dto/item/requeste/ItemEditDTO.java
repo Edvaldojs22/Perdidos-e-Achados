@@ -22,8 +22,8 @@ public class ItemEditDTO {
     @NotNull(message = "Imagem ou url de imagem obrigatório")
     private MultipartFile imagem;
 
-    @NotBlank(message = "Cidade é obrigatório")
-    private String cidade;
+    @NotBlank(message = "Setor é obrigatório")
+    private String setor;
 
     @NotBlank(message = "Contato é obrigatório")
     private String contato;

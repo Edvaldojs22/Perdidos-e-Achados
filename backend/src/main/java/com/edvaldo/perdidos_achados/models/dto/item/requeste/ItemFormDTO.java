@@ -1,9 +1,7 @@
 package com.edvaldo.perdidos_achados.models.dto.item.requeste;
 
 import org.springframework.web.multipart.MultipartFile;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +18,10 @@ public class ItemFormDTO {
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    @NotNull(message = "Imagem ou url de imagem obrigatório")
     private MultipartFile imagem;
 
-    @NotNull(message = "Cidade é obrigatório")
-    private String cidade;
+    @NotBlank(message = "Setor é obrigatório")
+    private String setor;
 
     @NotBlank(message = "Numero de celular é obrigatório")
     @Pattern(

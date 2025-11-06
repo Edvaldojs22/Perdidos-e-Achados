@@ -30,20 +30,22 @@ public class ItemService {
     public ItemService(ItemRepository itemRepository,ImagemService imagemService){
         this.itemRepository = itemRepository;
         this.imagemService = imagemService;
-    }
+    } 
 
 
-    public Item cadastrarItem(@Valid ItemFormDTO dto) throws IOException{
+    public Item cadastrarItem( ItemFormDTO dto) throws IOException{
         String imagemUrl = imagemService.salvarImagemLocal(dto.getImagem());
+        System.out.println("Url da imagem criada " + imagemUrl);
+
         Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) authenticacao.getPrincipal();
-        
+
         Item item = new Item();
         item.setNome(dto.getNome());
         item.setDescricao(dto.getDescricao());
         item.setImagemUrl(imagemUrl);
         item.setCategoria(dto.getCategoria());
-        item.setCidade(dto.getCidade());
+        item.setSetor(dto.getSetor());
         item.setContato(dto.getContato());
         item.setLocalRef(dto.getLocalRef());
         item.setUsuario(usuario);
@@ -80,7 +82,7 @@ public class ItemService {
         if (dto.getDescricao() != null) item.setDescricao(dto.getDescricao());
         if (dto.getCategoria() != null) item.setCategoria(dto.getCategoria());
         if (dto.getStatus() != null) item.setStatus(dto.getStatus());
-        if (dto.getCidade() != null) item.setCidade(dto.getCidade());
+        if (dto.getSetor() != null) item.setSetor(dto.getSetor());
         if (dto.getLocalRef() != null) item.setLocalRef(dto.getLocalRef());
         if (dto.getContato() != null) item.setContato(dto.getContato());
 
@@ -104,7 +106,7 @@ public class ItemService {
                 throw new AcessoNegadoException("Você não tem permissão para excluir esse item");
         }
 
-        item.setStatus("Encontrado");
+        item.setStatus("ENCONTRADO");
         itemRepository.save(item);
         return "Parabéns o item foi Encontrado";
     }
@@ -128,7 +130,7 @@ public class ItemService {
                 .imagemUrl(item.getImagemUrl())
                 .categoria(item.getCategoria())
                 .status(item.getStatus())
-                .cidade(item.getCidade())
+                .setor(item.getSetor())
                 .localRef(item.getLocalRef())
                 .contato(item.getContato())
                 .dataPostado(item.getDataPostado())
@@ -141,7 +143,7 @@ public class ItemService {
             .map(item -> ItemPublicoDTO.builder()
                 .nome(item.getNome())
                 .imagemUrl(item.getImagemUrl())
-                .cidade(item.getCidade())
+                .setor(item.getSetor())
                 .dataPostado(item.getDataPostado())
                 .build())
             .collect(Collectors.toList());

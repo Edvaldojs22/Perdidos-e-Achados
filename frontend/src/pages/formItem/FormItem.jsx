@@ -34,14 +34,25 @@ const FormItem = () => {
       return;
     }
 
+    // Cria o objeto com os dados
+
+    const dados = {
+      nome,
+      descricao,
+      categoria,
+      setor,
+      localRef,
+      contato: telefone,
+    };
+
+    // Cria o FormData
     const formData = new FormData();
-    formData.append("nome", nome);
-    formData.append("descricao", descricao);
-    formData.append("imagem", imagem);
-    formData.append("categoria", categoria);
-    formData.append("setor ", setor);
-    formData.append("localRef", localRef);
-    formData.append("contato", telefone);
+    formData.append(
+      "dados",
+      new Blob([JSON.stringify(dados)], { type: "application/json" })
+    );
+
+    formData.append("imagem", imagem); // arquivo
 
     try {
       const response = await createItem(formData);

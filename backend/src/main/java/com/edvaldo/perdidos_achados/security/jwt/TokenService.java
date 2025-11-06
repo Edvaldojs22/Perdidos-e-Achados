@@ -33,7 +33,7 @@ public class TokenService {
             .setIssuer("perdidos-achados-api")
             .setSubject(usuario.getUsername())
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 200000L))
+            .setExpiration(new Date(System.currentTimeMillis() + 3600000L))
             .signWith(getSigningKey(), SignatureAlgorithm.HS256)
             .compact();
     }

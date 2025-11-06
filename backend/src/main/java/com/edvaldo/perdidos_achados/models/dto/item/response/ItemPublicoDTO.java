@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ItemPublicoDTO {
     private String nome;
-    private String cidade;
+    private String setor;
     private String imagemUrl;
     private LocalDateTime dataPostado;
 }

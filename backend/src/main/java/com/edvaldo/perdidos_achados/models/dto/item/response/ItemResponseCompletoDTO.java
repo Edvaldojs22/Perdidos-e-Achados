@@ -19,7 +19,7 @@ public class ItemResponseCompletoDTO  {
     private String imagemUrl;
     private String categoria;
     private String status;
-    private String cidade;
+    private String setor;
     private String localRef;
     private String contato;
     private LocalDateTime dataPostado;

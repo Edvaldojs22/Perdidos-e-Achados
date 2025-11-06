@@ -3,7 +3,6 @@ package com.edvaldo.perdidos_achados.controller.item;
 import java.io.IOException;
 import java.util.List;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.edvaldo.perdidos_achados.entity.Item;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemFormDTO;
@@ -24,22 +25,23 @@ import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemEditDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.response.ItemResponseCompletoDTO;
 import com.edvaldo.perdidos_achados.service.item.ItemService;
 
-
 import jakarta.validation.Valid;
-
 @RestController
 @RequestMapping("/api/items")
 public class ItemController {
 
-    private final ItemService itemService;   
+    private final ItemService itemService;
+
+
 
     public ItemController(ItemService itemService){
-        this.itemService = itemService;
-    
+        this.itemService = itemService;    
     }
 
     @PostMapping( value =  "/novo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ItemResponseCompletoDTO>criarItem( @Valid @ModelAttribute ItemFormDTO dto) throws IOException{
+    public ResponseEntity<ItemResponseCompletoDTO>criarItem(@Valid @RequestPart("dados") ItemFormDTO dto,@RequestPart("imagem")MultipartFile imagem) throws IOException{
+
+        dto.setImagem(imagem);
         Item itemSalvo = itemService.cadastrarItem(dto);
 
         ItemResponseCompletoDTO responseItem = new ItemResponseCompletoDTO();
@@ -49,7 +51,7 @@ public class ItemController {
         responseItem.setImagemUrl(itemSalvo.getImagemUrl());
         responseItem.setCategoria(itemSalvo.getCategoria());
         responseItem.setStatus(itemSalvo.getStatus());
-        responseItem.setCidade(itemSalvo.getCidade());
+        responseItem.setSetor(itemSalvo.getSetor());
         responseItem.setLocalRef(itemSalvo.getLocalRef());
         responseItem.setContato(itemSalvo.getContato());
         responseItem.setDataPostado(itemSalvo.getDataPostado());
@@ -65,7 +67,7 @@ public class ItemController {
        ItemResponseCompletoDTO responseItem = new ItemResponseCompletoDTO();
         responseItem.setNome(itemEditado.getNome());
         responseItem.setCategoria(itemEditado.getCategoria());
-        responseItem.setCidade(itemEditado.getCidade());
+        responseItem.setSetor(itemEditado.getSetor());
         responseItem.setContato(itemEditado.getContato());
         responseItem.setDescricao(itemEditado.getDescricao());
         responseItem.setImagemUrl(itemEditado.getImagemUrl());

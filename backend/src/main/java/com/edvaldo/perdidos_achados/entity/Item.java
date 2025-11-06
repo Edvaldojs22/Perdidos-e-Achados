@@ -29,7 +29,7 @@ public class Item {
     private String imagemUrl;
     private String categoria;
     private String status = "PERDIDO";
-    private String cidade;
+    private String setor;
     private String localRef;
     private String contato;
 
