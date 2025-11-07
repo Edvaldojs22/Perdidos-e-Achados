@@ -1,0 +1,93 @@
+.form_login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100dvh;
+  gap: 50px;
+  font-size: 1.1rem;
+}
+
+.form_login > div:first-child {
+  background-color: var(--laranja-queimado);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 100px;
+  color: var(--branco-puro);
+  width: 100%;
+}
+
+.sherdog {
+  width: 60px;
+  transform: scaleX(-1);
+}
+
+.box_section {
+  background-color: var(--laranja-queimado);
+  padding: 50px 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-direction: column;
+  margin: 0 20px;
+  border-radius: 20px;
+  min-height: 350px;
+  width: calc(100% - 20px);
+  max-width: 400px;
+}
+
+.form_login div:last-child {
+  color: var(--branco-puro);
+  text-align: center;
+  position: relative;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.form_login div:last-child img {
+  width: 50px;
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+}
+
+.box_section input {
+  border: none;
+  padding: 10px;
+  border-radius: 7px;
+  outline: none;
+  font-size: 1.1rem;
+  width: 100%;
+}
+
+.box_section input::placeholder {
+  font-weight: 600;
+  color: rgb(190, 190, 190);
+}
+
+.box_section button {
+  background-color: var(--azul-claro);
+  border: none;
+  padding: 10px;
+  border-radius: 7px;
+  color: var(--branco-puro);
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all;
+  width: 100%;
+}
+
+.box_section button:active {
+  background-color: var(--azul-escuro);
+}
+
+.erro {
+  background-color: var(--branco-puro);
+  border-radius: 7px;
+  padding: 3px 20px;
+  text-align: center;
+  color: red;
+  font-weight: 600;
+}

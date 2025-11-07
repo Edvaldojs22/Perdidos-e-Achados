@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
+import { images } from "../../assets";
+import style from "./Login.module.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,41 +16,46 @@ const Login = () => {
     try {
       const response = await login(email, senha);
       console.log(response);
-      navigate("/home"); // redireciona para rota protegida
+      navigate("/");
     } catch (err) {
-      setErro(err?.message || "Erro ao fazer login");
+      console.log(err);
+      setErro(err?.data || "Erro ao fazer login");
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "0 auto" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+    <form className={style.form_login} onSubmit={handleLogin}>
+      <div>
+        <img className={style.sherdog} src={images.sherdog} alt="" />
+        <h2>Perdidos e Achados</h2>
+      </div>
+      <section className={style.box_section}>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="E-mail"
+        />
 
-        <div>
-          <label>Senha:</label>
-          <input
-            type="password"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="password"
+          placeholder="Senha"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          required
+        />
 
         <button type="submit">Entrar</button>
-      </form>
 
-      {erro && <p style={{ color: "red" }}>{erro}</p>}
-    </div>
+        {erro && <p className={style.erro}>{erro}</p>}
+
+        <div>
+          <h3>Cadastre-se</h3>
+          <img src={images.sherdogNew} alt="" />
+        </div>
+      </section>
+    </form>
   );
 };
 
