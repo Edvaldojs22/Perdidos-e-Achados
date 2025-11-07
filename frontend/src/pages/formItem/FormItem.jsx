@@ -2,6 +2,7 @@ import style from "./FormItem.module.css";
 import { images } from "../../assets";
 import { useRef, useState } from "react";
 import { createItem } from "../../api/itemApi";
+import { MdCancel } from "react-icons/md";
 
 const FormItem = () => {
   const inputRef = useRef(null);
@@ -15,6 +16,10 @@ const FormItem = () => {
 
   const handleClick = () => {
     inputRef.current.click();
+  };
+
+  const handleCleanImg = () => {
+    setPreviewImg(null);
   };
 
   const handleChange = (event) => {
@@ -70,7 +75,14 @@ const FormItem = () => {
     <form onSubmit={handleSubmit} className={style.formItem} action="">
       <div onClick={handleClick}>
         {previewImg ? (
-          <img className={style.imagemPreview} src={previewImg} alt="Prévia" />
+          <div>
+            <img
+              className={style.imagemPreview}
+              src={previewImg}
+              alt="Prévia"
+            />
+            <MdCancel onClick={handleCleanImg} className={style.mdCancel} />
+          </div>
         ) : (
           <div className={style.box_iconText}>
             <img
@@ -94,8 +106,7 @@ const FormItem = () => {
       </div>
 
       <section>
-        <p>Preencha tudo para uma boa busca!</p>
-
+        <h2>Preencha tudo para uma boa busca!</h2>
         <div>
           <label htmlFor="pistaNome">Pista Nome:</label>
           <input

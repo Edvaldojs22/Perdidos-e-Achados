@@ -10,7 +10,6 @@ export const login = async (email, senha) => {
     localStorage.setItem("token", token);
     return respose.data;
   } catch (error) {
-    console.log(error);
     throw error.response;
   }
 };

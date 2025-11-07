@@ -5,6 +5,7 @@ import sherdogSmell from "./sherdogSmell.png";
 import sherdogSeacrch from "./sherdogSearch.png";
 import sherdogSelf from "./sherdogSelf.png";
 import sherdogForm from "./sherdogForm.png";
+import sherdogNew from "./sherdogNew.png";
 
 export const images = {
   lupa,
@@ -14,4 +15,5 @@ export const images = {
   sherdogSeacrch,
   sherdogSelf,
   sherdogForm,
+  sherdogNew,
 };

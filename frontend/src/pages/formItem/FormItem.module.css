@@ -4,6 +4,7 @@
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
+  gap: 20px;
 }
 .formItem section {
   background-color: var(--laranja-queimado);
@@ -20,15 +21,34 @@
   color: var(--branco-puro);
 }
 
-.formItem section div input,
-select {
+.formItem section h2 {
+  font-size: 1.1rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--branco-puro);
+}
+
+.formItem section label {
+  font-weight: 600;
+}
+
+.formItem section div input {
   border: none;
   border-radius: 7px;
   padding: 10px 5px;
   background-color: var(--bege-suave);
-  color: var(--texto-inpunt);
   font-weight: 600;
   outline: none;
+}
+
+.formItem select {
+  background-color: var(--bege-suave);
+  padding: 10px 5px;
+  border-radius: 7px;
+  font-weight: 600;
+  outline: none;
+  color: var(--texto-inpunt);
+  border: none;
 }
 
 .formItem section div input::placeholder {
@@ -42,15 +62,27 @@ select {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 300px;
-  height: 200px;
+  max-width: 350px;
+  min-height: 200px;
+  padding: 20px;
   color: #0077b6;
   font-size: 1.2rem;
   font-weight: 600;
-  background: var(--branco-puro);
   margin: 0 auto;
   border-radius: 20px;
   position: relative;
+  cursor: pointer;
+}
+
+.mdCancel {
+  position: absolute;
+  right: -40px;
+  bottom: -10px;
+  font-size: 30px;
+  color: #b60000;
+}
+.mdCancel:hover {
+  transform: scale(1.1);
 }
 
 .formItem input[type="file"] {
@@ -67,8 +99,7 @@ select {
 }
 
 .imagemPreview {
-  width: 100%;
-  height: 100%;
+  max-width: 150px;
   object-fit: contain;
   border-radius: 20px;
 }
