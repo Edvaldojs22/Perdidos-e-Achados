@@ -1,8 +1,9 @@
 import style from "./FormItem.module.css";
 import { images } from "../../assets";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createItem } from "../../api/itemApi";
 import { MdCancel } from "react-icons/md";
+import ModalWarning from "../../components/modal/ModalWarning";
 
 const FormItem = () => {
   const inputRef = useRef(null);
@@ -13,6 +14,7 @@ const FormItem = () => {
   const [categoria, setCategoria] = useState("");
   const [localRef, setLocalRef] = useState("");
   const [telefone, setTelefone] = useState("");
+  const [mostrarAviso, setMostrarAviso] = useState(false);
 
   const handleClick = () => {
     inputRef.current.click();
@@ -70,6 +72,11 @@ const FormItem = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) setMostrarAviso(true);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className={style.formItem} action="">
@@ -190,7 +197,14 @@ const FormItem = () => {
           />
         </div>
       </section>
-
+      {mostrarAviso && (
+        <ModalWarning
+          text={
+            "Faça login ou cadastre-se para conseguir postar um item. Assim garantimos que todos os itens sejam publicados com segurança e responsabilidade"
+          }
+          imgUrl={images.sherdogError}
+        />
+      )}
       <div>
         <button className={style.bnt_submit} type="submit">
           Postar

@@ -14,12 +14,10 @@ const Login = () => {
     e.preventDefault();
     setErro("");
     try {
-      const response = await login(email, senha);
-      console.log(response);
+      await login(email, senha);
       navigate("/");
     } catch (err) {
-      console.log(err);
-      setErro(err?.data || "Erro ao fazer login");
+      setErro(err?.data || "Tente mais tarde");
     }
   };
 

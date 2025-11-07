@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { images } from "../../assets";
 import ItemCard from "../../components/cardItem/ItemCard";
 import style from "./Home.module.css";
@@ -8,12 +9,12 @@ import { getAllItens } from "../../api/itemApi";
 const Home = () => {
   const [itens, setItens] = useState([]);
   const cidadesUnicas = [...new Set(itens.map((item) => item.cidade))];
-
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
-
   const [filtroNome, setFiltroNome] = useState("");
   const [filtroCidade, setFiltroCidade] = useState("");
+
+  const navigate = useNavigate();
 
   const itensFiltrados = itens.filter((item) => {
     const nomeMatch = item.nome
@@ -28,6 +29,7 @@ const Home = () => {
       try {
         const response = await getAllItens();
         setItens(response.data);
+        console.log(response.data);
       } catch (err) {
         console.error("Erro ao buscar itens:", err);
         setErro("Não foi possível carregar os itens.");
@@ -79,7 +81,6 @@ const Home = () => {
 
       <section className={style.boxScroll}>
         <div className={style.boxItens}>
-          {console.log(itensFiltrados)}
           {loading ? (
             <p>Procurando itens...</p>
           ) : erro ? (
@@ -99,9 +100,13 @@ const Home = () => {
           )}
         </div>
       </section>
-
       <button>Carregar</button>
-      <img className={style.iconBox} src={images.box} alt="Novo item" />
+      <img
+        className={style.iconBox}
+        src={images.box}
+        alt="Novo item"
+        onClick={() => navigate("/novo-item")}
+      />
     </main>
   );
 };
