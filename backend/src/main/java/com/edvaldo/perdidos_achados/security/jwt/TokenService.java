@@ -28,10 +28,9 @@ public class TokenService {
     }
 
     public String gerarToken(Usuario usuario){
-       
         return Jwts.builder()
             .setIssuer("perdidos-achados-api")
-            .setSubject(usuario.getUsername())
+            .setSubject(usuario.getEmail())
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + 3600000L))
             .signWith(getSigningKey(), SignatureAlgorithm.HS256)

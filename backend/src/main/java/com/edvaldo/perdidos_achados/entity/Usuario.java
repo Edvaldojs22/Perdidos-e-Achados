@@ -32,8 +32,13 @@ public class Usuario implements UserDetails {
     private String senha;
     private String contato;
 
+    public String getEmail(){
+      return this.email;
+    }
+
     @CreationTimestamp
     private LocalDateTime criadoEm;
+    
 
     @UpdateTimestamp
     private LocalDateTime atualizadoEm;
@@ -48,6 +53,7 @@ public class Usuario implements UserDetails {
     public String getUsername(){
         return this.email;
     }
+
      @Override
     public String getPassword(){
         return this.senha;
