@@ -7,6 +7,7 @@ import sherdogSelf from "./sherdogSelf.png";
 import sherdogForm from "./sherdogForm.png";
 import sherdogNew from "./sherdogNew.png";
 import sherdogError from "./sherdogError.png";
+import sherdogWhats from "./sherdogWhats.png";
 
 export const images = {
   lupa,
@@ -18,4 +19,5 @@ export const images = {
   sherdogForm,
   sherdogNew,
   sherdogError,
+  sherdogWhats,
 };

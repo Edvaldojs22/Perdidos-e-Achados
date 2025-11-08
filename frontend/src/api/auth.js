@@ -8,6 +8,7 @@ export const login = async ({ email, senha }) => {
     });
 
     const token = response.data.token;
+    console.log(token);
     localStorage.setItem("token", token);
     return response.data;
   } catch (error) {
