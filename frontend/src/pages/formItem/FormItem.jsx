@@ -4,17 +4,20 @@ import { useEffect, useRef, useState } from "react";
 import { createItem } from "../../api/itemApi";
 import { MdCancel } from "react-icons/md";
 import ModalWarning from "../../components/modal/ModalWarning";
+import ButtonForm from "../../components/button/ButtonForm";
+import { showSuccess } from "../../service/ToasTservice";
 
 const FormItem = () => {
   const inputRef = useRef(null);
   const [previewImg, setPreviewImg] = useState(null);
-  const [setor, setSetor] = useState("");
-  const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [localRef, setLocalRef] = useState("");
-  const [telefone, setTelefone] = useState("");
+  const [setor, setSetor] = useState(null);
+  const [nome, setNome] = useState(null);
+  const [descricao, setDescricao] = useState(null);
+  const [categoria, setCategoria] = useState(null);
+  const [localRef, setLocalRef] = useState(null);
+  const [telefone, setTelefone] = useState(null);
   const [mostrarAviso, setMostrarAviso] = useState(false);
+  const [erros, setErros] = useState({});
 
   const handleClick = () => {
     inputRef.current.click();
@@ -34,12 +37,13 @@ const FormItem = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const imagem = inputRef.current.files[0];
 
-    if (!imagem) {
-      alert("Selecione uma imagem");
-      return;
-    }
+    // if (!imagem) {
+    //   alert("Selecione uma imagem");
+    //   return;
+    // }
 
     // Cria o objeto com os dados
 
@@ -62,11 +66,26 @@ const FormItem = () => {
     formData.append("imagem", imagem); // arquivo
 
     try {
-      const response = await createItem(formData);
-      console.log("Item criado:", response);
+      await createItem(formData);
+      showSuccess("Item postado com Sucesso!");
+      setNome("");
+      setDescricao("");
+      setCategoria("");
+      setSetor("");
+      setLocalRef("");
+      setTelefone("");
+      setPreviewImg(null);
+      inputRef.current.value = null;
     } catch (err) {
       if (err?.response) {
         console.log("Erro ao cadastrar:", err.response.data);
+        setErros(err.response.data);
+        if (
+          err.response.data.mensagem ==
+          "Esta rota requer um Token JWT válido (Bearer Token)."
+        ) {
+          setMostrarAviso(false);
+        }
       } else {
         console.log("Erro inesperado:", err.message || err);
       }
@@ -76,7 +95,7 @@ const FormItem = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) setMostrarAviso(true);
-  }, []);
+  }, [mostrarAviso]);
 
   return (
     <form onSubmit={handleSubmit} className={style.formItem} action="">
@@ -107,8 +126,8 @@ const FormItem = () => {
           id="imagem"
           ref={inputRef}
           accept="image/*"
-          onChange={handleChange}
           required
+          onChange={handleChange}
         />
       </div>
 
@@ -131,7 +150,6 @@ const FormItem = () => {
             id="pistaDescrição"
             name="pistaDescrição"
             type="text"
-            required
             placeholder="Ex: Cor, Marca, Tamanho"
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
@@ -179,7 +197,6 @@ const FormItem = () => {
           <input
             name="pistaLocalReferencia"
             type="text"
-            required
             placeholder="Ex: Perto da escada"
             value={localRef}
             onChange={(e) => setLocalRef(e.target.value)}
@@ -190,10 +207,10 @@ const FormItem = () => {
           <input
             name="pistaTelefone"
             type="text"
-            required
             placeholder="Ex: (83) 9XXXX-XXXX"
             value={telefone}
             onChange={(e) => setTelefone(e.target.value)}
+            required
           />
         </div>
       </section>
@@ -205,12 +222,8 @@ const FormItem = () => {
           imgUrl={images.sherdogError}
         />
       )}
-      <div>
-        <button className={style.bnt_submit} type="submit">
-          Postar
-        </button>
-        <img className={style.sherdogForm} src={images.sherdogForm} alt="" />
-      </div>
+
+      <ButtonForm text={"Postar"} imgUrl={images.sherdogForm} />
     </form>
   );
 };

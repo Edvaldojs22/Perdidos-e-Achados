@@ -1,0 +1,21 @@
+.box_buttonForm {
+  position: relative;
+}
+
+.box_buttonForm button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: var(--azul-claro);
+  border-radius: 7px;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  color: var(--branco-puro);
+}
+
+.box_buttonForm img {
+  width: 70px;
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+}

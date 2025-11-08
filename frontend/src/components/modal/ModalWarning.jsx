@@ -14,7 +14,9 @@ const ModalWarning = ({ imgUrl, text }) => {
           <button type="button" onClick={() => navigate("/login")}>
             Login
           </button>
-          <button type="button">Cadastrar</button>
+          <button type="button" onClick={() => navigate("/registrar")}>
+            Cadastrar
+          </button>
         </div>
         <MdCancel className={style.mdCancel} onClick={() => setActive(false)} />
       </div>
