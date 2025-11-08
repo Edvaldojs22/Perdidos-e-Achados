@@ -1,5 +1,6 @@
 package com.edvaldo.perdidos_achados.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,7 +33,8 @@ public class Item {
     private String setor;
     private String localRef;
     private String contato;
-
+    private BigDecimal recompensa;
+    
     @CreationTimestamp
     private LocalDateTime dataPostado;
 

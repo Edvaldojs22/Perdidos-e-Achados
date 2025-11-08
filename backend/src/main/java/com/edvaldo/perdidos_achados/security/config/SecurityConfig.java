@@ -36,9 +36,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) 
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/cadastrar").permitAll()
-                    .requestMatchers(HttpMethod.GET,"/api/items").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/login","/auth/cadastrar").permitAll()
+                    .requestMatchers(HttpMethod.GET,"/api/itens","/api/item/{itemId}").permitAll()
                     .anyRequest().authenticated()
                 )
                 .exceptionHandling(handling -> handling                    

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.edvaldo.perdidos_achados.entity.Item;
+import com.edvaldo.perdidos_achados.entity.Usuario;
 import com.edvaldo.perdidos_achados.exception.item.ImagemVaziaException;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemFormDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemEditDTO;
@@ -28,7 +29,7 @@ import com.edvaldo.perdidos_achados.service.item.ItemService;
 
 import jakarta.validation.Valid;
 @RestController
-@RequestMapping("/api/items")
+@RequestMapping("/api")
 public class ItemController {
 
     private final ItemService itemService;
@@ -39,7 +40,7 @@ public class ItemController {
         this.itemService = itemService;    
     }
 
-    @PostMapping( value =  "/novo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping( value =  "/item/cadastrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ItemResponseCompletoDTO>criarItem(@Valid @RequestPart("dados") ItemFormDTO dto,@RequestPart("imagem")MultipartFile imagem) throws IOException{
 
       if (imagem == null || imagem.isEmpty()) {
@@ -67,9 +68,9 @@ public class ItemController {
     }
 
 
-    @PutMapping( value =  "/editar/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ItemResponseCompletoDTO>editar(@PathVariable Long id, @ModelAttribute @Valid ItemEditDTO dto, Authentication authentication) throws IOException{
-        Item itemEditado = itemService.editarItemPorId(id,dto );
+    @PutMapping( value =  "/item/{itemId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ItemResponseCompletoDTO>editar(@PathVariable Long itemId, @ModelAttribute @Valid ItemEditDTO dto, Authentication authentication) throws IOException{
+        Item itemEditado = itemService.editarItemPorId(itemId,dto );
         
        ItemResponseCompletoDTO responseItem = new ItemResponseCompletoDTO();
         responseItem.setNome(itemEditado.getNome());
@@ -84,22 +85,44 @@ public class ItemController {
         return ResponseEntity.ok(responseItem);
     }
     
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void>deletar(@PathVariable Long id, Authentication authentication) {
-        itemService.deletarItemPorId(id);
+    @DeleteMapping("/item/{itemId}")
+    public ResponseEntity<Void>deletar(@PathVariable Long itemId, Authentication authentication) {
+         Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
+        itemService.deletarItemPorId(itemId, usuarioLogado.getId());
+
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/achado/{id}")
-    public ResponseEntity<String>confirmarRecuperacao(@PathVariable Long id, Authentication authentication){
-        String mensagem = itemService.confirmarRecuperacaoDoItem(id);
+    @PutMapping("/item/{itemId}")
+    public ResponseEntity<String>confirmarRecuperacao(@PathVariable Long itemId, Authentication authentication){
+        Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
+        String mensagem = itemService.confirmarRecuperacaoDoItem(itemId,usuarioLogado.getId());
         return ResponseEntity.ok(mensagem);
     }
 
-    @GetMapping
+  @GetMapping("/itens")
     public ResponseEntity<Object>items(Authentication authentication){
         List<Object> itens = itemService.todosItens();
         return ResponseEntity.ok(itens);
     }
-    
+
+    @GetMapping("/item/{itemId}")
+    public ResponseEntity<Object> itemInfo (@PathVariable Long itemId, Authentication authentication){
+        Long usuarioId = null;
+        if (authentication != null && authentication.isAuthenticated()) {
+            Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
+            usuarioId = usuarioLogado.getId();
+        }
+
+        Object item = itemService.itemPorId(itemId, usuarioId);
+        return ResponseEntity.ok(item);
+    }
+
+    @GetMapping("/meus-itens")
+    public ResponseEntity<List<ItemResponseCompletoDTO>> buscaItens(Authentication authentication){
+        Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
+         List<ItemResponseCompletoDTO> itens = itemService.buscarItensDoUsuario(usuarioLogado.getId());
+        return ResponseEntity.ok(itens);
+
+    }
 }

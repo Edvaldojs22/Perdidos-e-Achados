@@ -1,5 +1,6 @@
 package com.edvaldo.perdidos_achados.models.dto.item.response;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class ItemResponseCompletoDTO  {
     private String setor;
     private String localRef;
     private String contato;
+    private BigDecimal recompensa;
     private LocalDateTime dataPostado;
     private LocalDateTime atualizadoEm;
     private Long usuarioId ;

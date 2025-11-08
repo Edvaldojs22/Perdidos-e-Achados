@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("api/usuarios")
+@RequestMapping("/api")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -24,13 +24,13 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/usuario/{id}")
     public ResponseEntity<Void>deletarUsuario(@PathVariable Long id ){
         usuarioService.deletarPorId(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/editar/{id}")
+    @PutMapping("/usuario/{id}")
     public ResponseEntity<UsuarioEditDTO>editar(@PathVariable Long id, @RequestBody @Valid UsuarioEditDTO dto, Authentication authenticacao){
         Usuario usuarioEditado = usuarioService.editarUsuario(id, dto);
 

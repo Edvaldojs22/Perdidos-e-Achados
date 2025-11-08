@@ -16,7 +16,7 @@ import com.edvaldo.perdidos_achados.exception.item.ItemNaoEncontradoException;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemFormDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemEditDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.response.ItemResponseCompletoDTO;
-import com.edvaldo.perdidos_achados.models.dto.item.response.ItemPublicoDTO;
+import com.edvaldo.perdidos_achados.models.dto.item.response.ItemResponsePublicoDTO;
 import com.edvaldo.perdidos_achados.repository.item.ItemRepository;
 import com.edvaldo.perdidos_achados.service.image.ImagemService;
 
@@ -47,6 +47,7 @@ public class ItemService {
         item.setCategoria(dto.getCategoria());
         item.setSetor(dto.getSetor());
         item.setContato(dto.getContato());
+        item.setRecompensa(dto.getRecompensa());
         item.setLocalRef(dto.getLocalRef());
         item.setUsuario(usuario);
 
@@ -54,14 +55,11 @@ public class ItemService {
         
     }
 
-    public void deletarItemPorId (Long id){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Usuario usuario = (Usuario) auth.getPrincipal();
-
-        Item item = itemRepository.findById(id)
+    public void deletarItemPorId (Long itemId, Long usuarioId){
+        Item item = itemRepository.findById(itemId)
             .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
 
-         if(!item.getUsuario().getId().equals(usuario.getId())) {
+         if(!item.getUsuario().getId().equals(usuarioId)) {
                 throw new AcessoNegadoException("Você não tem permissão para excluir esse item");
         }
         
@@ -85,6 +83,7 @@ public class ItemService {
         if (dto.getSetor() != null) item.setSetor(dto.getSetor());
         if (dto.getLocalRef() != null) item.setLocalRef(dto.getLocalRef());
         if (dto.getContato() != null) item.setContato(dto.getContato());
+        if(dto.getRecompensa() != null) item.setRecompensa(dto.getRecompensa());
 
          // Se uma nova imagem foi enviada, salva e atualiza a URL
         if (dto.getImagem() != null && !dto.getImagem().isEmpty()) {
@@ -95,14 +94,11 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
-    public String confirmarRecuperacaoDoItem(Long id){
-        Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
-        Usuario usuario = (Usuario) authenticacao.getPrincipal();
-
-           Item item = itemRepository.findById(id)
+    public String confirmarRecuperacaoDoItem(Long itemId, Long usuarioId){
+           Item item = itemRepository.findById(itemId)
             .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
 
-              if(!item.getUsuario().getId().equals(usuario.getId())){
+              if(!item.getUsuario().getId().equals(usuarioId)){
                 throw new AcessoNegadoException("Você não tem permissão para excluir esse item");
         }
 
@@ -111,7 +107,40 @@ public class ItemService {
         return "Parabéns o item foi Encontrado";
     }
 
-  public List<Object> todosItens() {
+
+
+    public Object itemPorId(Long itemId, Long usuarioId){
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
+
+        if(usuarioId != null && item.getUsuario().getId().equals(usuarioId)){
+            return ItemResponseCompletoDTO.builder()
+             .id(item.getId())
+            .nome(item.getNome())
+            .descricao(item.getDescricao())
+            .imagemUrl(item.getImagemUrl())
+            .categoria(item.getCategoria())
+            .status(item.getStatus())
+            .setor(item.getSetor())
+            .localRef(item.getLocalRef())
+            .contato(item.getContato())
+            .recompensa(item.getRecompensa())
+            .dataPostado(item.getDataPostado())
+            .atualizadoEm(item.getAtualizadoEm())
+            .usuarioId(item.getUsuario().getId())
+            .build();
+         }
+
+         return ItemResponsePublicoDTO.builder()
+                .nome(item.getNome())
+                .imagemUrl(item.getImagemUrl())
+                .setor(item.getSetor())
+                .dataPostado(item.getDataPostado())
+                .recompensa(item.getRecompensa())
+                .build();
+    }
+
+    public List<Object> todosItens() {
     Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
     List<Item> itens = itemRepository.findAll();
     System.out.println("Itens encontrados: " + itens.size());
@@ -133,6 +162,7 @@ public class ItemService {
                 .setor(item.getSetor())
                 .localRef(item.getLocalRef())
                 .contato(item.getContato())
+                .recompensa(item.getRecompensa())
                 .dataPostado(item.getDataPostado())
                 .atualizadoEm(item.getAtualizadoEm())
                 .usuarioId(item.getUsuario().getId())
@@ -140,15 +170,42 @@ public class ItemService {
             .collect(Collectors.toList());
     } else {
         return itens.stream()
-            .map(item -> ItemPublicoDTO.builder()
+            .map(item -> ItemResponsePublicoDTO.builder()
                 .nome(item.getNome())
                 .imagemUrl(item.getImagemUrl())
                 .setor(item.getSetor())
+                .recompensa(item.getRecompensa())
                 .dataPostado(item.getDataPostado())
                 .build())
             .collect(Collectors.toList());
     }
 }
 
+    public List<ItemResponseCompletoDTO>buscarItensDoUsuario(Long usuarioId){
+        List<Item>itens = itemRepository.findByUsuarioId(usuarioId);
+
+        if (itens == null || itens.isEmpty()) {
+            throw new ItemNaoEncontradoException("Nenhum item encontrado");
+        }
+
+     return itens.stream()
+            .map(item -> ItemResponseCompletoDTO.builder()
+                .id(item.getId())
+                .nome(item.getNome())
+                .descricao(item.getDescricao())
+                .imagemUrl(item.getImagemUrl())
+                .categoria(item.getCategoria())
+                .status(item.getStatus())
+                .setor(item.getSetor())
+                .localRef(item.getLocalRef())
+                .contato(item.getContato())
+                .recompensa(item.getRecompensa())
+                .dataPostado(item.getDataPostado())
+                .atualizadoEm(item.getAtualizadoEm())
+                .usuarioId(item.getUsuario().getId())
+                .build())
+            .collect(Collectors.toList());
+
+    }
 
 }
