@@ -3,6 +3,9 @@ package com.edvaldo.perdidos_achados.models.dto.item.response;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.edvaldo.perdidos_achados.entity.enums.Categoria;
+import com.edvaldo.perdidos_achados.entity.enums.Setor;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,9 +21,9 @@ public class ItemResponseCompletoDTO  {
     private String nome;
     private String descricao;
     private String imagemUrl;
-    private String categoria;
+    private Categoria categoria;
     private String status;
-    private String setor;
+    private Setor setor;
     private String localRef;
     private String contato;
     private BigDecimal recompensa;

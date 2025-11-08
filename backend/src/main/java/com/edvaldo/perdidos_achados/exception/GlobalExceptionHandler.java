@@ -5,12 +5,13 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import com.edvaldo.perdidos_achados.exception.item.AcessoNegadoException;
+import com.edvaldo.perdidos_achados.exception.item.ImagemVaziaException;
 import com.edvaldo.perdidos_achados.exception.item.ItemNaoEncontradoException;
 import com.edvaldo.perdidos_achados.exception.usuario.EmailJaCadastradoException;
 import com.edvaldo.perdidos_achados.exception.usuario.UsuarioComItensException;
@@ -53,12 +54,30 @@ public class GlobalExceptionHandler  {
 
     @ExceptionHandler(ItemNaoEncontradoException.class)
     public ResponseEntity<String>ItemNaoEncontradoException(ItemNaoEncontradoException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     };
 
-      @ExceptionHandler(AcessoNegadoException.class)
+    @ExceptionHandler(AcessoNegadoException.class)
     public ResponseEntity<String>AcessoNegadoException(AcessoNegadoException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     };
+
+    @ExceptionHandler(ImagemVaziaException.class)
+    public ResponseEntity<String>ImagemVaziaException(ImagemVaziaException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+  
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+public ResponseEntity<String> handleJsonErro(HttpMessageNotReadableException ex) {
+    if (ex.getCause() instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException) {
+        return ResponseEntity.badRequest().body("Valor inválido para campo enum. Use um dos valores permitidos.");
+    }
+    return ResponseEntity.badRequest().body("Erro ao ler os dados da requisição.");
+}
+
+
+
+
     
 }

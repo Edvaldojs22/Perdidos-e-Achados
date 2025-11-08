@@ -135,6 +135,7 @@ public class ItemService {
                 .nome(item.getNome())
                 .imagemUrl(item.getImagemUrl())
                 .setor(item.getSetor())
+                .categoria(item.getCategoria())
                 .dataPostado(item.getDataPostado())
                 .recompensa(item.getRecompensa())
                 .build();

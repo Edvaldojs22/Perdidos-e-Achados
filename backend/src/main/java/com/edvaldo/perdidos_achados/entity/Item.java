@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.edvaldo.perdidos_achados.entity.enums.Categoria;
+import com.edvaldo.perdidos_achados.entity.enums.Setor;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,9 +31,9 @@ public class Item {
     private String nome;
     private String descricao;
     private String imagemUrl;
-    private String categoria;
+    private Categoria categoria;
     private String status = "PERDIDO";
-    private String setor;
+    private Setor setor;
     private String localRef;
     private String contato;
     private BigDecimal recompensa;

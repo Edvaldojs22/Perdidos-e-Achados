@@ -4,8 +4,14 @@ import java.math.BigDecimal;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.edvaldo.perdidos_achados.entity.enums.Categoria;
+import com.edvaldo.perdidos_achados.entity.enums.Setor;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,10 +20,9 @@ import lombok.Setter;
 @Setter
 public class ItemFormDTO {
 
-
     private String descricao;
-    private String categoria;
     private String localRef;
+     private MultipartFile imagem;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "A recompensa deve ser maior que zero")
     private BigDecimal recompensa;
@@ -25,10 +30,13 @@ public class ItemFormDTO {
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    private MultipartFile imagem;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Categoria é obrigatória")
+    private Categoria categoria;
 
-    @NotBlank(message = "Setor é obrigatório")
-    private String setor;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Setor é obrigatório")
+    private Setor setor;
 
     @NotBlank(message = "Numero de celular é obrigatório")
     @Pattern(
