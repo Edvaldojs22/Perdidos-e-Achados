@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.edvaldo.perdidos_achados.entity.Item;
+import com.edvaldo.perdidos_achados.exception.item.ImagemVaziaException;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemFormDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.requeste.ItemEditDTO;
 import com.edvaldo.perdidos_achados.models.dto.item.response.ItemResponseCompletoDTO;
@@ -41,7 +42,13 @@ public class ItemController {
     @PostMapping( value =  "/novo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ItemResponseCompletoDTO>criarItem(@Valid @RequestPart("dados") ItemFormDTO dto,@RequestPart("imagem")MultipartFile imagem) throws IOException{
 
+      if (imagem == null || imagem.isEmpty()) {
+        throw new ImagemVaziaException("Imagem é obrigatória e não pode estar vazia.");
+        }
+
         dto.setImagem(imagem);
+
+
         Item itemSalvo = itemService.cadastrarItem(dto);
 
         ItemResponseCompletoDTO responseItem = new ItemResponseCompletoDTO();

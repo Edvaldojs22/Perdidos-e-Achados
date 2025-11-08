@@ -20,8 +20,9 @@ public class UsuarioCreateDTO {
 
     @NotBlank(message = "Numero de celular é obrigatório")
     @Pattern(
-    regexp = "^\\(?\\d{2}\\)?\\s?9\\d{4}-?\\d{4}$",
-    message = "Formato inválido. Use o padrão (XX) 9XXXX-XXXX")
+    regexp = "^\\d{11}$",
+    message = "Número inválido. Use 11 dígitos: DDD + número")
+   
     private String contato;
     
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
