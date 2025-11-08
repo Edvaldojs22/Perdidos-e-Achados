@@ -1,33 +1,34 @@
-.form_login {
+.form_Register {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+
   height: 100dvh;
-  gap: 50px;
-  font-size: 1.1rem;
+  padding-bottom: 10px;
 }
 
-.form_login > div:first-child {
+.form_Register > div:first-child {
   background-color: var(--laranja-queimado);
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
   padding-bottom: 20px;
+  gap: 20px;
   color: var(--branco-puro);
-  width: 100%;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  width: 100%;
 }
 
-.sherdog {
-  width: 60px;
+.form_Register img {
   transform: scaleX(-1);
+  width: 60px;
 }
 
-.box_section {
-  background-color: var(--laranja-queimado);
-  padding: 50px 10px 0;
+.form_Register section {
+  background-color: var(--azul-claro);
+  padding: 50px 10px 20px;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -39,22 +40,7 @@
   max-width: 400px;
 }
 
-.form_login div:last-child {
-  color: var(--branco-puro);
-  text-align: center;
-  position: relative;
-  width: 100%;
-  margin-top: 50px;
-}
-
-.form_login div:last-child img {
-  width: 50px;
-  position: absolute;
-  right: 20px;
-  bottom: 0;
-}
-
-.box_section input {
+.form_Register input {
   border: none;
   padding: 10px;
   border-radius: 7px;
@@ -63,13 +49,13 @@
   width: 100%;
 }
 
-.box_section input::placeholder {
+.form_Register input::placeholder {
   font-weight: 600;
   color: rgb(190, 190, 190);
 }
 
-.box_section button {
-  background-color: var(--azul-claro);
+.form_Register button {
+  background-color: var(--laranja-queimado);
   border: none;
   padding: 10px;
   border-radius: 7px;
@@ -78,18 +64,16 @@
   font-size: 1.1rem;
   cursor: pointer;
   transition: all;
+  width: calc(100% - 10px);
+}
+
+.form_Register section div {
   width: 100%;
 }
 
-.box_section button:active {
-  background-color: var(--azul-escuro);
-}
-
-.erro {
-  background-color: var(--branco-puro);
-  border-radius: 7px;
-  padding: 3px 20px;
-  text-align: center;
-  color: red;
+.form_Register section p {
+  color: rgb(219, 15, 15);
   font-weight: 600;
+  align-self: flex-start;
+  font-size: 0.8rem;
 }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
 import { images } from "../../assets";
 import style from "./Login.module.css";
+import { showSuccess } from "../../service/ToasTservice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,8 +15,11 @@ const Login = () => {
     e.preventDefault();
     setErro("");
     try {
-      await login(email, senha);
-      navigate("/");
+      await login({ email, senha });
+      showSuccess("Login feito com sucesso!");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (err) {
       setErro(err?.data || "Tente mais tarde");
     }
@@ -49,7 +53,7 @@ const Login = () => {
         {erro && <p className={style.erro}>{erro}</p>}
 
         <div>
-          <h3>Cadastre-se</h3>
+          <h3 onClick={() => navigate("/registrar")}>Cadastre-se</h3>
           <img src={images.sherdogNew} alt="" />
         </div>
       </section>

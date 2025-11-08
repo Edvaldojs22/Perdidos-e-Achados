@@ -1,6 +1,6 @@
 import api from "./axios";
 
-export const login = async (email, senha) => {
+export const login = async ({ email, senha }) => {
   try {
     const response = await api.post("/auth/login", {
       email,
@@ -15,9 +15,9 @@ export const login = async (email, senha) => {
   }
 };
 
-export const registerUser = async (nome, senha, email, contato) => {
+export const registerUser = async ({ nome, email, senha, contato }) => {
   try {
-    const response = await api.post("/aut/cadastrar", {
+    const response = await api.post("/auth/cadastrar", {
       nome,
       email,
       senha,
