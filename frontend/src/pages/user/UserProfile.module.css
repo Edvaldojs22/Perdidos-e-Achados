@@ -1,0 +1,99 @@
+.profile {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--laranja-queimado);
+  position: relative;
+}
+
+.profile > div:first-child img {
+  width: 50px;
+}
+
+.box_imgText {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+.box_itens {
+  background-color: var(--branco-puro);
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 20px 10px 0;
+  flex: 1;
+  overflow: hidden;
+}
+.box_itens > p {
+  font-size: 20px;
+  text-align: center;
+}
+
+.box_scroll {
+  height: 88%;
+  overflow-y: auto;
+  padding: 10px 0;
+}
+
+.box_itens .itens {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.box_itens::-webkit-scrollbar {
+  height: 8px;
+}
+.box_itens::-webkit-scrollbar {
+  width: 6px; /* Scroll vertical */
+}
+
+.box_itens::-webkit-scrollbar-thumb {
+  background-color: var(--laranja-queimado);
+  border-radius: 10px;
+  width: 2px;
+}
+
+.box_imgText div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4rem;
+  color: var(--branco-puro);
+  font-weight: 600;
+}
+
+.box_imgText button {
+  align-self: flex-end;
+  margin-top: 20px;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 7px;
+  color: var(--laranja-queimado);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.box_imgText button:hover {
+  background-color: #e1a582;
+  color: white;
+  transition: all 0.3s;
+}
+
+.profile .btn_new {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: var(--laranja-queimado);
+  font-size: 50px;
+  cursor: pointer;
+}
+
+.profile .btn_new:hover {
+  color: var(--laranja-escuro);
+}

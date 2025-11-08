@@ -164,10 +164,19 @@ const FormItem = () => {
             id=""
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
+            required
           >
             <option value="">Selecione uma categoria</option>
-            <option value="Eletronico">Eletronico</option>
-            <option value=""></option>
+            <option value="DOCUMENTO">Documento</option>
+            <option value="ELETRONICO">Eletronico</option>
+            <option value="BAGAGEM">Bagagem</option>
+            <option value="ROUPA">Roupa</option>
+            <option value="DINHEIRO">Dinheiro</option>
+            <option value="OBJETOS_PESSOAL">Objeto Pessoal</option>
+            <option value="BRINQUEDO">Brinquedo</option>
+            <option value="MEDICAMENTO">Medicamento</option>
+            <option value="JOIA">Joia</option>
+            <option value="OUTRO">Outro</option>
           </select>
         </div>
         <div>
@@ -179,19 +188,11 @@ const FormItem = () => {
             required
           >
             <option value=""> Escolha um setor </option>
-            <option value="checkin">Área de Check-in</option>
-            <option value="embarque">Área de Embarque</option>
-            <option value="desembarque">Área de Desembarque</option>
-            <option value="seguranca">Área de Segurança</option>
-            <option value="alimentacao">
-              Praça de Alimentação / Restaurantes
-            </option>
-            <option value="lojas">Lojas / Duty Free</option>
-            <option value="banheiros">Banheiros</option>
-            <option value="estacionamento">Estacionamento</option>
-            <option value="entrada">Área Externa / Entrada do Aeroporto</option>
-            <option value="salas_vip">Salas VIP / Salas de Espera</option>
-            <option value="achados_perdidos">Achados e Perdidos</option>
+            <option value="SETO1">SETO1</option>
+            <option value="SETO2">SETO2</option>
+            <option value="SETO3">SETO3</option>
+            <option value="SETO4">SETO4</option>
+            <option value="SETO5">SETO5</option>
           </select>
         </div>
 

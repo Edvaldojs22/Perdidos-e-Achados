@@ -4,7 +4,7 @@ import { images } from "../../assets";
 import ItemCard from "../../components/cardItem/ItemCard";
 import style from "./Home.module.css";
 import { BsSearch } from "react-icons/bs";
-import { getAllItens } from "../../api/itemApi";
+import { buscaTodoItens } from "../../api/itemApi";
 
 const Home = () => {
   const [itens, setItens] = useState([]);
@@ -25,7 +25,7 @@ const Home = () => {
   useEffect(() => {
     const fetchItens = async () => {
       try {
-        const response = await getAllItens();
+        const response = await buscaTodoItens();
         setItens(response.data);
       } catch (err) {
         console.error("Erro ao buscar itens:", err);
@@ -73,10 +73,13 @@ const Home = () => {
               <ItemCard
                 key={item.id}
                 nome={item.nome}
-                imageUrl={item.imageUrl}
-                cidade={item.cidade}
-                postado={item.dataPostado}
+                imageUrl={
+                  "https://i.pinimg.com/originals/41/a7/50/41a750515fcf291d6435fb8f224e5dde.jpg"
+                }
+                setor={item.setor}
+                status={item.status}
                 itemId={item.id}
+                recompensa={item.recompensa}
               />
             ))
           )}
