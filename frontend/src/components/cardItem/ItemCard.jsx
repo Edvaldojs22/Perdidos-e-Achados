@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { images } from "../../assets";
 import styles from "./ItemCard.module.css";
 
-const ItemCard = ({ imageUrl, nome, cidade, postado }) => {
+const ItemCard = ({ imageUrl, nome, cidade, postado, itemId }) => {
+  const navigate = useNavigate();
   return (
-    <div className={styles.card}>
+    <div onClick={() => navigate(`/item/${itemId}`)} className={styles.card}>
       <div>
         <img
           className={styles.imgItem}

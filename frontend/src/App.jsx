@@ -6,9 +6,10 @@ import Home from "./pages/home/Home";
 import PrivateRoute from "./components/privateRoute/PrivateRoute ";
 import Login from "./pages/login/Login";
 import Perfil from "./pages/perfil/Perfil";
-import FormItem from "./pages/formItem/FormItem";
 import RegisterUser from "./pages/formUser/RegisterUser";
 import { ToastContainer } from "react-toastify";
+import FormItem from "./pages/item/formItem/FormItem";
+import ItemInfo from "./pages/item/ItemInfo/ItemInfo";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/novo-item" element={<FormItem />} />
         <Route path="/registrar" element={<RegisterUser />} />
+        <Route path="/item/:itemId" element={<ItemInfo />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/perfil" element={<Perfil />} />

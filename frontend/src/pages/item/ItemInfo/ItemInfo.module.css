@@ -1,0 +1,81 @@
+.box_itemInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100dvh;
+  padding: 10px 5px 5px;
+  font-weight: 600;
+}
+
+.box_itemInfo h2 {
+  margin-top: 20px;
+  color: var(--branco-puro);
+  font-size: 1.8rem;
+}
+
+.box_itemInfo > div {
+  background-color: var(--laranja-queimado);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.box_imgs {
+  position: relative;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.box_imgs img:first-child {
+  width: 80px;
+  transform: scaleX(-1);
+  position: absolute;
+  top: -80px;
+}
+
+.box_imgs img:last-child {
+  width: 100%;
+  height: 200px;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.status {
+  color: var(--branco-puro);
+}
+
+.box_dados {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+.box_dados div {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  color: var(--branco-puro);
+  font-weight: 600;
+}
+
+.box_dados div p:last-child {
+  background-color: var(--bege-suave);
+  border-radius: 7px;
+  color: var(--texto-inpunt);
+  padding: 5px 10px;
+}
+
+.recompensa {
+  color: var(--branco-puro);
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #5ea715;
+}

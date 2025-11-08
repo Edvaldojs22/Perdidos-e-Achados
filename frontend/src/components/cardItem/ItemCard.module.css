@@ -8,6 +8,7 @@
   color: var(--texto-item);
   width: 100%;
   max-width: 800px;
+  cursor: pointer;
 }
 
 .card > div {
@@ -38,6 +39,10 @@
   width: 25px;
   height: 25px;
   margin-right: 20px;
+}
+
+.imgILupa:hover {
+  transform: scale(1.2);
 }
 
 .text p:first-child {

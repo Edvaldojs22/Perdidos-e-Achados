@@ -8,11 +8,9 @@ import { getAllItens } from "../../api/itemApi";
 
 const Home = () => {
   const [itens, setItens] = useState([]);
-  const cidadesUnicas = [...new Set(itens.map((item) => item.cidade))];
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
   const [filtroNome, setFiltroNome] = useState("");
-  const [filtroCidade, setFiltroCidade] = useState("");
 
   const navigate = useNavigate();
 
@@ -20,8 +18,8 @@ const Home = () => {
     const nomeMatch = item.nome
       .toLowerCase()
       .includes(filtroNome.toLowerCase());
-    const cidadeMatch = filtroCidade === "" || item.cidade === filtroCidade;
-    return nomeMatch && cidadeMatch;
+
+    return nomeMatch;
   });
 
   useEffect(() => {
@@ -29,7 +27,6 @@ const Home = () => {
       try {
         const response = await getAllItens();
         setItens(response.data);
-        console.log(response.data);
       } catch (err) {
         console.error("Erro ao buscar itens:", err);
         setErro("Não foi possível carregar os itens.");
@@ -63,22 +60,6 @@ const Home = () => {
       </header>
       <h2>Items Perdidos</h2>
 
-      <div>
-        <select
-          name="Cidade"
-          id="cidade"
-          value={filtroCidade}
-          onChange={(e) => setFiltroCidade(e.target.value)}
-        >
-          <option value="">Selecione uma cidade</option>
-          {cidadesUnicas.map((cidade) => (
-            <option key={cidade} value={cidade}>
-              {cidade}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <section className={style.boxScroll}>
         <div className={style.boxItens}>
           {loading ? (
@@ -95,6 +76,7 @@ const Home = () => {
                 imageUrl={item.imageUrl}
                 cidade={item.cidade}
                 postado={item.dataPostado}
+                itemId={item.id}
               />
             ))
           )}

@@ -13,6 +13,11 @@
   color: var(--branco-puro);
 }
 
+.box_buttonForm button:hover {
+  background-color: var(--azul-escuro);
+  cursor: pointer;
+}
+
 .box_buttonForm img {
   width: 70px;
   position: absolute;

@@ -16,6 +16,7 @@ const Login = () => {
     setErro("");
     try {
       await login({ email, senha });
+
       showSuccess("Login feito com sucesso!");
       setTimeout(() => {
         navigate("/");

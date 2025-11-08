@@ -1,11 +1,11 @@
 import style from "./FormItem.module.css";
-import { images } from "../../assets";
+import { images } from "../../../assets";
 import { useEffect, useRef, useState } from "react";
-import { createItem } from "../../api/itemApi";
+import { createItem } from "../../../api/itemApi";
 import { MdCancel } from "react-icons/md";
-import ModalWarning from "../../components/modal/ModalWarning";
-import ButtonForm from "../../components/button/ButtonForm";
-import { showSuccess } from "../../service/ToasTservice";
+import ModalWarning from "../../../components/modal/ModalWarning";
+import ButtonForm from "../../../components/button/ButtonForm";
+import { showSuccess } from "../../../service/ToasTservice";
 
 const FormItem = () => {
   const inputRef = useRef(null);
@@ -16,6 +16,7 @@ const FormItem = () => {
   const [categoria, setCategoria] = useState(null);
   const [localRef, setLocalRef] = useState(null);
   const [telefone, setTelefone] = useState(null);
+  const [recompensa, setRecompensa] = useState(null);
   const [mostrarAviso, setMostrarAviso] = useState(false);
   const [erros, setErros] = useState({});
 
@@ -40,12 +41,10 @@ const FormItem = () => {
 
     const imagem = inputRef.current.files[0];
 
-    // if (!imagem) {
-    //   alert("Selecione uma imagem");
-    //   return;
-    // }
-
-    // Cria o objeto com os dados
+    if (!imagem) {
+      alert("Selecione uma imagem");
+      return;
+    }
 
     const dados = {
       nome,
@@ -54,6 +53,7 @@ const FormItem = () => {
       setor,
       localRef,
       contato: telefone,
+      recompensa,
     };
 
     // Cria o FormData
@@ -74,6 +74,7 @@ const FormItem = () => {
       setSetor("");
       setLocalRef("");
       setTelefone("");
+      setRecompensa("");
       setPreviewImg(null);
       inputRef.current.value = null;
     } catch (err) {
@@ -126,8 +127,8 @@ const FormItem = () => {
           id="imagem"
           ref={inputRef}
           accept="image/*"
-          required
           onChange={handleChange}
+          required
         />
       </div>
 
@@ -139,9 +140,10 @@ const FormItem = () => {
             id="pistaNome"
             name="pistaNome"
             type="text"
-            placeholder="Ex: Cateira"
+            placeholder={erros.nome ? `${erros.nome}!` : "Ex: Carteira"}
             value={nome}
             onChange={(e) => setNome(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -156,7 +158,7 @@ const FormItem = () => {
           />
         </div>
         <div>
-          <label htmlFor="pistaCategoria">Pista Categori:</label>
+          <label htmlFor="pistaCategoria">Pista Categoria:</label>
           <select
             name="pistaCategoria"
             id=""
@@ -174,6 +176,7 @@ const FormItem = () => {
             id="setor"
             name="setor"
             onChange={(e) => setSetor(e.target.value)}
+            required
           >
             <option value=""> Escolha um setor </option>
             <option value="checkin">Área de Check-in</option>
@@ -207,10 +210,25 @@ const FormItem = () => {
           <input
             name="pistaTelefone"
             type="text"
-            placeholder="Ex: (83) 9XXXX-XXXX"
+            placeholder={
+              erros.contato
+                ? "Formato esperado (83) 9XXXX-XXXX"
+                : "Ex: (83) 9XXXX-XXXX"
+            }
             value={telefone}
             onChange={(e) => setTelefone(e.target.value)}
             required
+          />
+        </div>
+        <div>
+          <label htmlFor="recompensa">Recompensa</label>
+          <input
+            name="recompensa"
+            type="number"
+            min={1}
+            value={recompensa}
+            placeholder="Ex: 100"
+            onChange={(e) => setRecompensa(e.target.value)}
           />
         </div>
       </section>
