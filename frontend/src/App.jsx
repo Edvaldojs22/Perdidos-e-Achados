@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import FormItem from "./pages/item/formItem/FormItem";
 import ItemInfo from "./pages/item/ItemInfo/ItemInfo";
 import UserProfile from "./pages/user/userProfile";
+import FormEdit from "./pages/item/formItem/FormEdit";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
 
         <Route element={<PrivateRoute />}>
           <Route path="/perfil" element={<UserProfile />} />
+          <Route path="/editar-item/:itemId" element={<FormEdit />} />
         </Route>
       </Routes>
     </div>

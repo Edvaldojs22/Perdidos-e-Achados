@@ -7,7 +7,8 @@ import ModalWarning from "../../../components/modal/ModalWarning";
 import ButtonForm from "../../../components/button/ButtonForm";
 import { showSuccess } from "../../../service/ToasTservice";
 
-const FormItem = () => {
+const FormItem = ({ modo = "criar", item = null }) => {
+  const isEdicao = modo === "editar";
   const inputRef = useRef(null);
   const [previewImg, setPreviewImg] = useState(null);
   const [setor, setSetor] = useState(null);
@@ -41,7 +42,7 @@ const FormItem = () => {
 
     const imagem = inputRef.current.files[0];
 
-    if (!imagem) {
+    if (!isEdicao && !imagem) {
       alert("Selecione uma imagem");
       return;
     }
@@ -63,11 +64,22 @@ const FormItem = () => {
       new Blob([JSON.stringify(dados)], { type: "application/json" })
     );
 
-    formData.append("imagem", imagem); // arquivo
+    // Só adiciona imagem se estiver criando ou trocando
+    if (!isEdicao || imagem) {
+      formData.append("imagem", imagem);
+    }
 
     try {
-      await createItem(formData);
-      showSuccess("Item postado com Sucesso!");
+      if (isEdicao) {
+        console.log("Edicao abilitada");
+      } else {
+        if (!imagem) {
+          alert("Selecione uma imagem");
+        }
+        await createItem(formData);
+        showSuccess("Item postado com Sucesso!");
+      }
+
       setNome("");
       setDescricao("");
       setCategoria("");
@@ -94,9 +106,26 @@ const FormItem = () => {
   };
 
   useEffect(() => {
+    if (isEdicao && item) {
+      setNome(item.nome || "");
+      setDescricao(item.descricao || "");
+      setCategoria(item.categoria || "");
+      setSetor(item.setor || "");
+      setLocalRef(item.localRef || "");
+      setTelefone(item.contato || "");
+      setRecompensa(item.recompensa || "");
+      setPreviewImg(item.imagemUrl || null);
+    }
+  }, [item, isEdicao]);
+
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) setMostrarAviso(true);
-  }, [mostrarAviso]);
+  }, []);
+
+  if (isEdicao && !item) {
+    return <p>Carregando item para edição...</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit} className={style.formItem} action="">
@@ -128,12 +157,15 @@ const FormItem = () => {
           ref={inputRef}
           accept="image/*"
           onChange={handleChange}
-          required
+          required={!isEdicao}
         />
       </div>
 
       <section>
-        <h2>Preencha tudo para uma boa busca!</h2>
+        <h2>
+          {isEdicao ? "Edite seu item" : "Preencha tudo para uma boa busca!"}
+        </h2>
+
         <div>
           <label htmlFor="pistaNome">Pista Nome:</label>
           <input
@@ -143,7 +175,7 @@ const FormItem = () => {
             placeholder={erros.nome ? `${erros.nome}!` : "Ex: Carteira"}
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            required
+            required={!isEdicao}
           />
         </div>
         <div>
@@ -164,7 +196,7 @@ const FormItem = () => {
             id=""
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
-            required
+            required={!isEdicao}
           >
             <option value="">Selecione uma categoria</option>
             <option value="DOCUMENTO">Documento</option>
@@ -185,7 +217,8 @@ const FormItem = () => {
             id="setor"
             name="setor"
             onChange={(e) => setSetor(e.target.value)}
-            required
+            required={!isEdicao}
+            value={setor}
           >
             <option value=""> Escolha um setor </option>
             <option value="SETO1">SETO1</option>
@@ -218,7 +251,7 @@ const FormItem = () => {
             }
             value={telefone}
             onChange={(e) => setTelefone(e.target.value)}
-            required
+            required={!isEdicao}
           />
         </div>
         <div>
@@ -242,7 +275,10 @@ const FormItem = () => {
         />
       )}
 
-      <ButtonForm text={"Postar"} imgUrl={images.sherdogForm} />
+      <ButtonForm
+        text={isEdicao ? "Editar" : "Postar"}
+        imgUrl={images.sherdogForm}
+      />
     </form>
   );
 };

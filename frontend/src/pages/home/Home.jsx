@@ -80,6 +80,7 @@ const Home = () => {
                 status={item.status}
                 itemId={item.id}
                 recompensa={item.recompensa}
+                pagina={"/item/"}
               />
             ))
           )}

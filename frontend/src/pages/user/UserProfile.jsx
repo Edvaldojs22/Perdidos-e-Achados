@@ -11,6 +11,11 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const nome = localStorage.getItem("nome");
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   useEffect(() => {
     const fetchItens = async () => {
       try {
@@ -33,7 +38,7 @@ const UserProfile = () => {
           <img src={images.sherdogNew} alt="" />
         </div>
 
-        <button>Sair</button>
+        <button onClick={logout}>Sair</button>
       </div>
 
       <div className={style.box_itens}>
@@ -54,6 +59,7 @@ const UserProfile = () => {
                   recompensa={item.recompensa}
                   status={item.status}
                   key={item.id}
+                  pagina={"/editar-item/"}
                 />
               ))}
             </div>
