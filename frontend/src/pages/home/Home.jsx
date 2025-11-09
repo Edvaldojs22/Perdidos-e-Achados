@@ -4,7 +4,7 @@ import { images } from "../../assets";
 import ItemCard from "../../components/cardItem/ItemCard";
 import style from "./Home.module.css";
 import { BsSearch } from "react-icons/bs";
-import { buscaTodoItens } from "../../api/itemApi";
+import { todoItens } from "../../api/itemApi";
 
 const Home = () => {
   const [itens, setItens] = useState([]);
@@ -25,8 +25,9 @@ const Home = () => {
   useEffect(() => {
     const fetchItens = async () => {
       try {
-        const response = await buscaTodoItens();
+        const response = await todoItens();
         setItens(response.data);
+        console.log(response.data);
       } catch (err) {
         console.error("Erro ao buscar itens:", err);
         setErro("Não foi possível carregar os itens.");

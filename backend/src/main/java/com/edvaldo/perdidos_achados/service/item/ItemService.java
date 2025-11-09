@@ -109,13 +109,11 @@ public class ItemService {
 
 
 
-    public Object itemPorId(Long itemId, Long usuarioId){
+    public ItemResponseCompletoDTO itemPorId(Long itemId){
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
-
-        if(usuarioId != null && item.getUsuario().getId().equals(usuarioId)){
             return ItemResponseCompletoDTO.builder()
-             .id(item.getId())
+            .id(item.getId())
             .nome(item.getNome())
             .descricao(item.getDescricao())
             .imagemUrl(item.getImagemUrl())
@@ -130,16 +128,6 @@ public class ItemService {
             .usuarioId(item.getUsuario().getId())
             .build();
          }
-
-         return ItemResponsePublicoDTO.builder()
-                .nome(item.getNome())
-                .imagemUrl(item.getImagemUrl())
-                .setor(item.getSetor())
-                .categoria(item.getCategoria())
-                .dataPostado(item.getDataPostado())
-                .recompensa(item.getRecompensa())
-                .build();
-    }
 
     public List<Object> todosItens() {
     Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
@@ -176,7 +164,7 @@ public class ItemService {
                 .imagemUrl(item.getImagemUrl())
                 .setor(item.getSetor())
                 .recompensa(item.getRecompensa())
-                .dataPostado(item.getDataPostado())
+                .status(item.getStatus())
                 .build())
             .collect(Collectors.toList());
     }

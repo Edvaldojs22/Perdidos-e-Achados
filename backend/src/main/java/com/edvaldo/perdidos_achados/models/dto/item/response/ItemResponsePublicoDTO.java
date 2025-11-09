@@ -23,5 +23,6 @@ public class ItemResponsePublicoDTO {
     private String imagemUrl;
     private BigDecimal recompensa;
     private LocalDateTime dataPostado;
+    private String status;
    
 }

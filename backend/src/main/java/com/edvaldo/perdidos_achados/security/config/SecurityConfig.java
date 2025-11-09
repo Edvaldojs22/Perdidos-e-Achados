@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/cadastrar").permitAll()
-                    .requestMatchers(HttpMethod.GET,"/api/itens","/api/item/{itemId}").permitAll()
+                    .requestMatchers(HttpMethod.GET,"/api/itens").permitAll()
                     .anyRequest().authenticated()
                 )
                 .exceptionHandling(handling -> handling                    

@@ -1,6 +1,6 @@
 import api from "./axios";
 
-export const buscaTodoItens = async () => {
+export const todoItens = async () => {
   try {
     const response = await api.get("/api/itens");
 

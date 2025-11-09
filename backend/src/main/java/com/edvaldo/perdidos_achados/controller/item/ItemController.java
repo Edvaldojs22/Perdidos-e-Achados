@@ -93,28 +93,22 @@ public class ItemController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/item/{itemId}")
+    @PutMapping("/item/recuperar/{itemId}")
     public ResponseEntity<String>confirmarRecuperacao(@PathVariable Long itemId, Authentication authentication){
         Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
         String mensagem = itemService.confirmarRecuperacaoDoItem(itemId,usuarioLogado.getId());
         return ResponseEntity.ok(mensagem);
     }
 
-  @GetMapping("/itens")
-    public ResponseEntity<Object>items(Authentication authentication){
+    @GetMapping("/itens")
+    public ResponseEntity<Object>items(){
         List<Object> itens = itemService.todosItens();
         return ResponseEntity.ok(itens);
     }
 
     @GetMapping("/item/{itemId}")
-    public ResponseEntity<Object> itemInfo (@PathVariable Long itemId, Authentication authentication){
-        Long usuarioId = null;
-        if (authentication != null && authentication.isAuthenticated()) {
-            Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
-            usuarioId = usuarioLogado.getId();
-        }
-
-        Object item = itemService.itemPorId(itemId, usuarioId);
+    public ResponseEntity<ItemResponseCompletoDTO> itemInfo (@PathVariable Long itemId){
+         ItemResponseCompletoDTO item = itemService.itemPorId(itemId);
         return ResponseEntity.ok(item);
     }
 
