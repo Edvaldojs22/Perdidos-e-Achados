@@ -4,22 +4,29 @@ import ButtonForm from "../../../components/button/ButtonForm";
 import style from "./ItemInfo.module.css";
 import { useEffect, useState } from "react";
 import { itemInfo } from "../../../api/itemApi";
+import ModalWarning from "../../../components/modal/ModalWarning";
 
 const ItemInfo = () => {
   const [item, setItem] = useState("");
   const { itemId } = useParams();
+  const [mostrarAviso, setMostrarAviso] = useState(false);
 
   useEffect(() => {
-    const fetchItem = async () => {
-      try {
-        const response = await itemInfo(itemId);
-        setItem(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchItem();
+    const token = localStorage.getItem("token");
+    if (token && token !== "undefined") {
+      const fetchItem = async () => {
+        try {
+          const response = await itemInfo(itemId);
+          setItem(response.data);
+        } catch (error) {
+          setMostrarAviso(true);
+          console.log(error);
+        }
+      };
+      fetchItem();
+    } else {
+      setMostrarAviso(true);
+    }
   }, []);
 
   return (
@@ -44,7 +51,7 @@ const ItemInfo = () => {
           </div>
           <div>
             <p>Pista Setor:</p>
-            <p>{item.setor}</p>
+            {item.setor ? <p>{item.setor}</p> : <p>Sem setor</p>}
           </div>
           <div>
             <p>Pista Local Referência:</p>
@@ -66,6 +73,14 @@ const ItemInfo = () => {
         text={"Entrar em contato"}
         imgUrl={images.sherdogWhats}
       />
+      {mostrarAviso && (
+        <ModalWarning
+          text={
+            "Faça login ou cadastre-se para conseguir ver todas as informaçoes do item"
+          }
+          imgUrl={images.sherdogError}
+        />
+      )}
     </section>
   );
 };

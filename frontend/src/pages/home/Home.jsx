@@ -5,12 +5,15 @@ import ItemCard from "../../components/cardItem/ItemCard";
 import style from "./Home.module.css";
 import { BsSearch } from "react-icons/bs";
 import { todoItens } from "../../api/itemApi";
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
+// import { FaArrowCircleLeft } from "react-icons/fa";
 
 const Home = () => {
   const [itens, setItens] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
   const [filtroNome, setFiltroNome] = useState("");
+  const [menuAberto, setMenuAberto] = useState(false);
 
   const navigate = useNavigate();
 
@@ -87,13 +90,22 @@ const Home = () => {
           )}
         </div>
       </section>
-      <button>Carregar</button>
-      <img
-        className={style.iconBox}
-        src={images.box}
-        alt="Novo item"
-        onClick={() => navigate("/novo-item")}
-      />
+
+      <div className={`${style.boxMenu} ${menuAberto ? style.ativo : ""}`}>
+        <p className={style.item1} onClick={() => navigate("/novo-Item")}>
+          Novo item
+        </p>
+        <p className={style.item2} onClick={() => navigate("/perfil")}>
+          Perfil
+        </p>
+      </div>
+
+      <div
+        className={style.iconMenu}
+        onClick={() => setMenuAberto(!menuAberto)}
+      >
+        {menuAberto ? <FaArrowCircleRight /> : <FaArrowCircleLeft />}
+      </div>
     </main>
   );
 };

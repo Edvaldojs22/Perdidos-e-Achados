@@ -4,8 +4,10 @@
   align-items: center;
   justify-content: space-between;
   height: 100dvh;
-  padding: 10px 5px 5px;
+  padding: 30px 5px 5px;
   font-weight: 600;
+  gap: 10px;
+  position: relative;
 }
 
 .box_itemInfo h2 {
@@ -14,7 +16,7 @@
   font-size: 1.8rem;
 }
 
-.box_itemInfo > div {
+.box_itemInfo > div:first-child {
   background-color: var(--laranja-queimado);
   border-radius: 20px;
   display: flex;

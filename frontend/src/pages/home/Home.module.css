@@ -76,8 +76,7 @@ header input::placeholder {
 
 .sherdogSmell,
 .sherdog,
-.icon_search,
-.iconBox {
+.icon_search {
   position: absolute;
 }
 .sherdog {
@@ -142,7 +141,67 @@ main button {
   margin-bottom: 10px;
 }
 
-.iconBox {
-  bottom: 5px;
-  right: 20px;
+.iconMenu {
+  color: var(--laranja-queimado);
+  font-size: 30px;
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+}
+
+.boxMenu {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 5px;
+  color: var(--branco-puro);
+  position: absolute;
+  bottom: 40px;
+  right: 0;
+  z-index: 2;
+}
+
+.boxMenu.ativo {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.boxMenu p {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.boxMenu.ativo .item1 {
+  transition-delay: 0.1s;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.boxMenu.ativo .item2 {
+  transition-delay: 0.2s;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.boxMenu p {
+  background-color: var(--laranja-queimado);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 5px;
+}
+
+.iconClose {
+  font-size: 30px;
+  font-weight: 1000;
+  color: var(--laranja-queimado);
 }

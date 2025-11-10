@@ -1,5 +1,6 @@
 .box_buttonForm {
   position: relative;
+  width: 100%;
 }
 
 .box_buttonForm button {
