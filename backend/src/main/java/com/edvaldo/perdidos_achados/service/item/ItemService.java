@@ -1,5 +1,8 @@
 package com.edvaldo.perdidos_achados.service.item;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,24 +65,38 @@ public class ItemService {
          if(!item.getUsuario().getId().equals(usuarioId)) {
                 throw new AcessoNegadoException("Você não tem permissão para excluir esse item");
         }
+
+        String imagemUrl = item.getImagemUrl();
+         // supondo que no banco guarda algo como "uploads/imagem123.jpg"
+         if (imagemUrl != null && !imagemUrl.isEmpty()) {
+        try {
+             String nomeImagem = imagemUrl.substring(imagemUrl.lastIndexOf("/") + 1);
+
+            Path path = Paths.get("C:\\estudos\\java\\projetos\\perdidos-achados\\backend\\uploads",nomeImagem);
+
+            Files.deleteIfExists(path);
+             System.out.println("🧹 Imagem deletada: " + path);
+        } catch (Exception e) {
+            System.err.println("Erro ao deletar imagem: " + e.getMessage());
+        }
+    }
         
         itemRepository.delete(item);
     }
 
-    public Item editarItemPorId(Long id, @Valid ItemEditDTO dto) throws IOException{
+    public Item editarItemPorId(Long itemId, @Valid ItemEditDTO dto) throws IOException{
         Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) authenticacao.getPrincipal();
 
-        Item item = itemRepository.findById(id)
+        Item item = itemRepository.findById(itemId)
             .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
 
         if(!item.getUsuario().getId().equals(usuario.getId())){
-                throw new AcessoNegadoException("Você não tem permissão para excluir esse item");
+                throw new AcessoNegadoException("Você não tem permissão para editar ese item");
         }
         if (dto.getNome() != null) item.setNome(dto.getNome());
         if (dto.getDescricao() != null) item.setDescricao(dto.getDescricao());
         if (dto.getCategoria() != null) item.setCategoria(dto.getCategoria());
-        if (dto.getStatus() != null) item.setStatus(dto.getStatus());
         if (dto.getSetor() != null) item.setSetor(dto.getSetor());
         if (dto.getLocalRef() != null) item.setLocalRef(dto.getLocalRef());
         if (dto.getContato() != null) item.setContato(dto.getContato());

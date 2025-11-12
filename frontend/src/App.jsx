@@ -19,11 +19,11 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
-        <Route path="/novo-item" element={<FormItem />} />
         <Route path="/registrar" element={<RegisterUser />} />
-        <Route path="/item/:itemId" element={<ItemInfo />} />
 
         <Route element={<PrivateRoute />}>
+          <Route path="/item/:itemId" element={<ItemInfo />} />
+          <Route path="/novo-item" element={<FormItem />} />
           <Route path="/perfil" element={<UserProfile />} />
           <Route path="/editar-item/:itemId" element={<FormEdit />} />
         </Route>

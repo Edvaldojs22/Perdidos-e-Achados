@@ -13,6 +13,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
   const [filtroNome, setFiltroNome] = useState("");
+  const [filtraSetor, setFiltraSetor] = useState("");
   const [menuAberto, setMenuAberto] = useState(false);
 
   const navigate = useNavigate();
@@ -22,7 +23,11 @@ const Home = () => {
       .toLowerCase()
       .includes(filtroNome.toLowerCase());
 
-    return nomeMatch;
+    const setorMatch = item.setor
+      .toLowerCase()
+      .includes(filtraSetor.toLowerCase());
+
+    return nomeMatch && setorMatch;
   });
 
   useEffect(() => {
@@ -30,7 +35,6 @@ const Home = () => {
       try {
         const response = await todoItens();
         setItens(response.data);
-        console.log(response.data);
       } catch (err) {
         console.error("Erro ao buscar itens:", err);
         setErro("Não foi possível carregar os itens.");
@@ -64,6 +68,22 @@ const Home = () => {
       </header>
       <h2>Items Perdidos</h2>
 
+      <select
+        className={style.select_setor}
+        name=""
+        id=""
+        placeholder="setor"
+        value={filtraSetor}
+        onChange={(e) => setFiltraSetor(e.target.value)}
+      >
+        <option value="">Setor</option>
+        <option value="SETO1">SETO1</option>
+        <option value="SETO2">SETO2</option>
+        <option value="SETO3">SETO3</option>
+        <option value="SETO4">SETO4</option>
+        <option value="SETO5">SETO5</option>
+      </select>
+
       <section className={style.boxScroll}>
         <div className={style.boxItens}>
           {loading ? (
@@ -73,18 +93,16 @@ const Home = () => {
           ) : itensFiltrados.length === 0 ? (
             <p className={style.vazio}>Nenhum item encontrado.</p>
           ) : (
-            itensFiltrados.map((item) => (
+            itensFiltrados.map((item, index) => (
               <ItemCard
-                key={item.id}
+                key={index}
                 nome={item.nome}
-                imageUrl={
-                  "https://i.pinimg.com/originals/41/a7/50/41a750515fcf291d6435fb8f224e5dde.jpg"
-                }
+                imageUrl={item.imagemUrl}
                 setor={item.setor}
                 status={item.status}
                 itemId={item.id}
                 recompensa={item.recompensa}
-                pagina={"/item/"}
+                pagina={`/item/${item.id}`}
               />
             ))
           )}

@@ -1,8 +1,8 @@
-import style from "./ModalWarning.module.css";
+import style from "./stylesModal/ModalWarning.module.css";
 import { useNavigate } from "react-router-dom";
 import { MdCancel } from "react-icons/md";
 import { useState } from "react";
-const ModalWarning = ({ imgUrl, text }) => {
+const ModalWarning = ({ imgUrl, text, icon = true }) => {
   const [active, setActive] = useState(true);
   const navigate = useNavigate();
   return (
@@ -18,7 +18,12 @@ const ModalWarning = ({ imgUrl, text }) => {
             Cadastrar
           </button>
         </div>
-        <MdCancel className={style.mdCancel} onClick={() => setActive(false)} />
+        {icon && (
+          <MdCancel
+            className={style.mdCancel}
+            onClick={() => setActive(false)}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,18 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./ItemCard.module.css";
 
-const ItemCard = ({
-  imageUrl,
-  nome,
-  setor,
-  status,
-  itemId,
-  recompensa,
-  pagina,
-}) => {
+const ItemCard = ({ imageUrl, nome, setor, status, recompensa, pagina }) => {
   const navigate = useNavigate();
   return (
-    <div onClick={() => navigate(`${pagina}${itemId}`)} className={styles.card}>
+    <div onClick={() => navigate(pagina)} className={styles.card}>
       <div>
         <div className={styles.box_imgTetx}>
           <img

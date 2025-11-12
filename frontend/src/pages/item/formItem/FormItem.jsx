@@ -1,25 +1,29 @@
 import style from "./FormItem.module.css";
 import { images } from "../../../assets";
 import { useEffect, useRef, useState } from "react";
-import { createItem } from "../../../api/itemApi";
+import { createItem, editarItem, excluirItem } from "../../../api/itemApi";
 import { MdCancel } from "react-icons/md";
 import ModalWarning from "../../../components/modal/ModalWarning";
 import ButtonForm from "../../../components/button/ButtonForm";
 import { showSuccess } from "../../../service/ToasTservice";
+import { useNavigate } from "react-router-dom";
+import Confirmation from "../../../components/modal/Confirmation";
 
 const FormItem = ({ modo = "criar", item = null }) => {
   const isEdicao = modo === "editar";
   const inputRef = useRef(null);
   const [previewImg, setPreviewImg] = useState(null);
-  const [setor, setSetor] = useState(null);
-  const [nome, setNome] = useState(null);
-  const [descricao, setDescricao] = useState(null);
-  const [categoria, setCategoria] = useState(null);
-  const [localRef, setLocalRef] = useState(null);
-  const [telefone, setTelefone] = useState(null);
-  const [recompensa, setRecompensa] = useState(null);
+  const [setor, setSetor] = useState("");
+  const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [categoria, setCategoria] = useState("");
+  const [localRef, setLocalRef] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [recompensa, setRecompensa] = useState("");
   const [mostrarAviso, setMostrarAviso] = useState(false);
   const [erros, setErros] = useState({});
+  const [active, setActive] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     inputRef.current.click();
@@ -47,6 +51,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
       return;
     }
 
+    // Cria o JSON dos dados do item
     const dados = {
       nome,
       descricao,
@@ -57,21 +62,23 @@ const FormItem = ({ modo = "criar", item = null }) => {
       recompensa,
     };
 
-    // Cria o FormData
+    // Cria o FormData com o campo "dados" em JSON
     const formData = new FormData();
     formData.append(
       "dados",
       new Blob([JSON.stringify(dados)], { type: "application/json" })
     );
 
-    // Só adiciona imagem se estiver criando ou trocando
+    // Só adiciona imagem se for novo ou trocando
     if (!isEdicao || imagem) {
       formData.append("imagem", imagem);
     }
 
     try {
       if (isEdicao) {
-        console.log("Edicao abilitada");
+        await editarItem(item.id, formData);
+        showSuccess(item.nome + " editado");
+        navigate("/perfil");
       } else {
         if (!imagem) {
           alert("Selecione uma imagem");
@@ -126,6 +133,18 @@ const FormItem = ({ modo = "criar", item = null }) => {
   if (isEdicao && !item) {
     return <p>Carregando item para edição...</p>;
   }
+
+  const handleExcluirItem = async () => {
+    try {
+      const response = await excluirItem(item.id);
+      console.log(response.data);
+      showSuccess("Item excluído");
+      navigate("/perfil");
+    } catch (error) {
+      console.log(error.response);
+      showSuccess("Item excluído com sucesso");
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit} className={style.formItem} action="">
@@ -265,6 +284,16 @@ const FormItem = ({ modo = "criar", item = null }) => {
             onChange={(e) => setRecompensa(e.target.value)}
           />
         </div>
+
+        {isEdicao && (
+          <button
+            className={style.btnExcluir}
+            type="button"
+            onClick={() => setActive(true)}
+          >
+            Excluir
+          </button>
+        )}
       </section>
       {mostrarAviso && (
         <ModalWarning
@@ -274,9 +303,16 @@ const FormItem = ({ modo = "criar", item = null }) => {
           imgUrl={images.sherdogError}
         />
       )}
+      {active && (
+        <Confirmation
+          text={"Deseja excluir?"}
+          handleExcluir={handleExcluirItem}
+          onCancel={() => setActive(false)}
+        />
+      )}
 
       <ButtonForm
-        text={isEdicao ? "Editar" : "Postar"}
+        text={isEdicao ? "Salvar" : "Postar"}
         imgUrl={images.sherdogForm}
       />
     </form>

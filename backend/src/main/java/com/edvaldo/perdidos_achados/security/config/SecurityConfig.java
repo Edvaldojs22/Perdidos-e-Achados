@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/cadastrar").permitAll()
                     .requestMatchers(HttpMethod.GET,"/api/itens").permitAll()
+                    .requestMatchers("/uploads/**").permitAll()
                     .anyRequest().authenticated()
                 )
                 .exceptionHandling(handling -> handling                    

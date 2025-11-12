@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -69,7 +68,14 @@ public class ItemController {
 
 
     @PutMapping( value =  "/item/{itemId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ItemResponseCompletoDTO>editar(@PathVariable Long itemId, @ModelAttribute @Valid ItemEditDTO dto, Authentication authentication) throws IOException{
+    public ResponseEntity<ItemResponseCompletoDTO>editar(@PathVariable Long itemId, @Valid @RequestPart("dados") ItemEditDTO dto, @RequestPart("imagem") MultipartFile imagem ) throws IOException{
+       
+        if (imagem == null || imagem.isEmpty()) {
+        throw new ImagemVaziaException("Imagem é obrigatória e não pode estar vazia.");
+        }
+
+        dto.setImagem(imagem);
+
         Item itemEditado = itemService.editarItemPorId(itemId,dto );
         
        ItemResponseCompletoDTO responseItem = new ItemResponseCompletoDTO();

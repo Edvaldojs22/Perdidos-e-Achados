@@ -42,7 +42,5 @@ public class ItemEditDTO {
 
     @NotBlank(message = "Contato é obrigatório")
     private String contato;
-    
-    @NotBlank(message = "Status do item é obrigatório")
-    private String status;
+
 }

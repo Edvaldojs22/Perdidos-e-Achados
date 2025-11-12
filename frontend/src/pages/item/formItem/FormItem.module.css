@@ -1,13 +1,17 @@
 .formItem {
-  padding: 20px 10px 10px 10px;
+  padding: 30px 5px 10px;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
   justify-content: space-between;
-  gap: 20px;
+  align-items: center;
+  gap: 10px;
+  position: relative;
 }
 .formItem section {
   background-color: var(--laranja-queimado);
+  width: 100%;
+  max-width: 500px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -134,4 +138,15 @@
 
 .formItem > div:last-child {
   position: relative;
+}
+
+.btnExcluir {
+  border: none;
+  cursor: pointer;
+  background-color: #b60000;
+  border-radius: 20px;
+  color: var(--branco-puro);
+  font-weight: 600;
+  width: auto;
+  padding: 10px;
 }

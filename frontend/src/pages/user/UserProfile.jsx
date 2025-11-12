@@ -10,6 +10,7 @@ const UserProfile = () => {
   const [itens, setItens] = useState([]);
   const navigate = useNavigate();
   const nome = localStorage.getItem("nome");
+  
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -20,9 +21,7 @@ const UserProfile = () => {
     const fetchItens = async () => {
       try {
         const response = await itensDoUsuario();
-        console.log(response.data);
         setItens(response.data);
-        console.log(itens);
       } catch (error) {
         console.log(error);
       }
@@ -33,6 +32,7 @@ const UserProfile = () => {
   return (
     <section className={style.profile}>
       <div className={style.box_imgText}>
+        <h2>Bem vindo!</h2>
         <div>
           <p>{nome}</p>
           <img src={images.sherdogNew} alt="" />
@@ -48,18 +48,16 @@ const UserProfile = () => {
             <p>Nenhum intem encontrado</p>
           ) : (
             <div className={style.itens}>
-              {itens.map((item) => (
+              {itens.map((item, index) => (
                 <ItemCard
-                  imageUrl={
-                    "https://i.pinimg.com/originals/41/a7/50/41a750515fcf291d6435fb8f224e5dde.jpg"
-                  }
+                  key={index}
+                  imageUrl={item.imagemUrl}
                   itemId={item.id}
                   nome={item.nome}
                   setor={item.setor}
                   recompensa={item.recompensa}
                   status={item.status}
-                  key={item.id}
-                  pagina={"/editar-item/"}
+                  pagina={`/editar-item/${item.id}`}
                 />
               ))}
             </div>
