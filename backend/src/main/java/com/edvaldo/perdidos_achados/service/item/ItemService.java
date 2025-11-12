@@ -126,25 +126,25 @@ public class ItemService {
 
 
 
-    public ItemResponseCompletoDTO itemPorId(Long itemId){
+    public ItemResponseCompletoDTO itemPorId(Long itemId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
-            return ItemResponseCompletoDTO.builder()
-            .id(item.getId())
-            .nome(item.getNome())
-            .descricao(item.getDescricao())
-            .imagemUrl(item.getImagemUrl())
-            .categoria(item.getCategoria())
-            .status(item.getStatus())
-            .setor(item.getSetor())
-            .localRef(item.getLocalRef())
-            .contato(item.getContato())
-            .recompensa(item.getRecompensa())
-            .dataPostado(item.getDataPostado())
-            .atualizadoEm(item.getAtualizadoEm())
-            .usuarioId(item.getUsuario().getId())
-            .build();
-         }
+        return new ItemResponseCompletoDTO(
+                item.getId(),
+                item.getNome(),
+                item.getDescricao(),
+                item.getImagemUrl(),
+                item.getCategoria(),
+                item.getStatus(),
+                item.getSetor(),
+                item.getLocalRef(),
+                item.getContato(),
+                item.getRecompensa(),
+                item.getDataPostado(),
+                item.getAtualizadoEm(),
+                item.getUsuario().getId());
+    }
+
 
     public List<Object> todosItens() {
     Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
@@ -158,21 +158,22 @@ public class ItemService {
 
     if (autenticado) {
         return itens.stream()
-            .map(item -> ItemResponseCompletoDTO.builder()
-                .id(item.getId())
-                .nome(item.getNome())
-                .descricao(item.getDescricao())
-                .imagemUrl(item.getImagemUrl())
-                .categoria(item.getCategoria())
-                .status(item.getStatus())
-                .setor(item.getSetor())
-                .localRef(item.getLocalRef())
-                .contato(item.getContato())
-                .recompensa(item.getRecompensa())
-                .dataPostado(item.getDataPostado())
-                .atualizadoEm(item.getAtualizadoEm())
-                .usuarioId(item.getUsuario().getId())
-                .build())
+            .map(item -> new ItemResponseCompletoDTO(
+                    item.getId(),
+                    item.getNome(),
+                    item.getDescricao(),
+                    item.getImagemUrl(),
+                    item.getCategoria(),
+                    item.getStatus(),
+                    item.getSetor(),
+                    item.getLocalRef(),
+                    item.getContato(),
+                    item.getRecompensa(),
+                    item.getDataPostado(),
+                    item.getAtualizadoEm(),
+                    item.getUsuario().getId()
+            ))
+
             .collect(Collectors.toList());
     } else {
         return itens.stream()
@@ -195,21 +196,20 @@ public class ItemService {
         }
 
      return itens.stream()
-            .map(item -> ItemResponseCompletoDTO.builder()
-                .id(item.getId())
-                .nome(item.getNome())
-                .descricao(item.getDescricao())
-                .imagemUrl(item.getImagemUrl())
-                .categoria(item.getCategoria())
-                .status(item.getStatus())
-                .setor(item.getSetor())
-                .localRef(item.getLocalRef())
-                .contato(item.getContato())
-                .recompensa(item.getRecompensa())
-                .dataPostado(item.getDataPostado())
-                .atualizadoEm(item.getAtualizadoEm())
-                .usuarioId(item.getUsuario().getId())
-                .build())
+            .map(item ->  new ItemResponseCompletoDTO(
+                    item.getId(),
+                    item.getNome(),
+                    item.getDescricao(),
+                    item.getImagemUrl(),
+                    item.getCategoria(),
+                    item.getStatus(),
+                    item.getSetor(),
+                    item.getLocalRef(),
+                    item.getContato(),
+                    item.getRecompensa(),
+                    item.getDataPostado(),
+                    item.getAtualizadoEm(),
+                    item.getUsuario().getId()))
             .collect(Collectors.toList());
 
     }

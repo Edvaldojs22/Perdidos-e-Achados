@@ -1,6 +1,8 @@
 package com.edvaldo.perdidos_achados.controller.item;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -51,17 +53,22 @@ public class ItemController {
 
         Item itemSalvo = itemService.cadastrarItem(dto);
 
-        ItemResponseCompletoDTO responseItem = new ItemResponseCompletoDTO();
-        responseItem.setId(itemSalvo.getId());
-        responseItem.setNome(itemSalvo.getNome());
-        responseItem.setDescricao(itemSalvo.getDescricao());
-        responseItem.setImagemUrl(itemSalvo.getImagemUrl());
-        responseItem.setCategoria(itemSalvo.getCategoria());
-        responseItem.setStatus(itemSalvo.getStatus());
-        responseItem.setSetor(itemSalvo.getSetor());
-        responseItem.setLocalRef(itemSalvo.getLocalRef());
-        responseItem.setContato(itemSalvo.getContato());
-        responseItem.setDataPostado(itemSalvo.getDataPostado());
+
+        ItemResponseCompletoDTO responseItem = new ItemResponseCompletoDTO(
+        itemSalvo.getId(),
+        itemSalvo.getNome(),
+        itemSalvo.getDescricao(),
+        itemSalvo.getImagemUrl(),
+        itemSalvo.getCategoria(),
+        itemSalvo.getStatus(),
+        itemSalvo.getSetor(),
+        itemSalvo.getLocalRef(),
+        itemSalvo.getContato(),
+        itemSalvo.getRecompensa(),
+        itemSalvo.getDataPostado(),
+        itemSalvo.getAtualizadoEm(),
+        itemSalvo.getUsuario().getId()
+        );
        
         return ResponseEntity.status(HttpStatus.CREATED).body(responseItem);
     }
@@ -78,15 +85,21 @@ public class ItemController {
 
         Item itemEditado = itemService.editarItemPorId(itemId,dto );
         
-       ItemResponseCompletoDTO responseItem = new ItemResponseCompletoDTO();
-        responseItem.setNome(itemEditado.getNome());
-        responseItem.setCategoria(itemEditado.getCategoria());
-        responseItem.setSetor(itemEditado.getSetor());
-        responseItem.setContato(itemEditado.getContato());
-        responseItem.setDescricao(itemEditado.getDescricao());
-        responseItem.setImagemUrl(itemEditado.getImagemUrl());
-        responseItem.setLocalRef(itemEditado.getLocalRef());
-        responseItem.setStatus(itemEditado.getStatus());
+       ItemResponseCompletoDTO responseItem = new ItemResponseCompletoDTO(
+               itemEditado.getId(),
+               itemEditado.getNome(),
+               itemEditado.getDescricao(),
+               itemEditado.getImagemUrl(),
+               itemEditado.getCategoria(),
+               itemEditado.getStatus(),
+               itemEditado.getSetor(),
+               itemEditado.getLocalRef(),
+               itemEditado.getContato(),
+               itemEditado.getRecompensa(),
+               itemEditado.getDataPostado(),
+               itemEditado.getAtualizadoEm(),
+               itemEditado.getUsuario().getId()
+       );
       
         return ResponseEntity.ok(responseItem);
     }
