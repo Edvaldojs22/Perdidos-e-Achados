@@ -1,8 +1,10 @@
 package com.edvaldo.perdidos_achados.security.config;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -14,14 +16,25 @@ import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class FirebaseConfig {
+   
     
     @PostConstruct
-    public void inicializarFirebase() throws IOException{
-        FileInputStream serviceAccount = new FileInputStream("firebase/firebase-credencias.json");
-     
+    public void inicializarFirebase() throws IOException {
+        InputStream serviceAccount;
+
+        // Verifica se está rodando no Render com variável de ambiente
+        String firebaseEnv = System.getenv("FIREBASE_CONFIG");
+
+        if (firebaseEnv != null && !firebaseEnv.isEmpty()) {
+            serviceAccount = new ByteArrayInputStream(firebaseEnv.getBytes(StandardCharsets.UTF_8));
+        } else {
+            // Usa o arquivo local para desenvolvimento
+            serviceAccount = new FileInputStream("firebase/firebase-credencias.json");
+        }
+
         FirebaseOptions options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-            .setStorageBucket("perdidos-e-achados-2d103.firebasestorage.app") 
+            .setStorageBucket("perdidos-e-achados-2d103.appspot.com")
             .build();
 
         if (FirebaseApp.getApps().isEmpty()) {
