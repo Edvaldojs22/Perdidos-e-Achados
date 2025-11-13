@@ -1,8 +1,6 @@
 package com.edvaldo.perdidos_achados.controller.item;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -75,13 +73,16 @@ public class ItemController {
 
 
     @PutMapping( value =  "/item/{itemId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ItemResponseCompletoDTO>editar(@PathVariable Long itemId, @Valid @RequestPart("dados") ItemEditDTO dto, @RequestPart("imagem") MultipartFile imagem ) throws IOException{
-       
-        if (imagem == null || imagem.isEmpty()) {
-        throw new ImagemVaziaException("Imagem é obrigatória e não pode estar vazia.");
+    public ResponseEntity<ItemResponseCompletoDTO>editar(
+        @PathVariable Long itemId,
+        @Valid @RequestPart("dados") ItemEditDTO dto,
+        @RequestPart(value = "imagem", required = false) MultipartFile imagem ) throws IOException{
+
+        if (imagem != null && !imagem.isEmpty()) {
+          dto.setImagem(imagem);
         }
 
-        dto.setImagem(imagem);
+       
 
         Item itemEditado = itemService.editarItemPorId(itemId,dto );
         

@@ -1,14 +1,7 @@
 import api from "./axios";
 
 export const todoItens = async () => {
-  try {
-    const response = await api.get("/api/itens");
-
-    return response;
-  } catch (error) {
-    console.log(error.response);
-    throw error;
-  }
+  return api.get("/api/itens");
 };
 
 export const createItem = async (formData) => {
@@ -27,49 +20,22 @@ export const createItem = async (formData) => {
 };
 
 export const itemInfo = async (itemId) => {
-  try {
-    const response = await api.get(`/api/item/${itemId}`);
-    return response;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+  return api.get(`/api/item/${itemId}`);
 };
 
 export const itensDoUsuario = async () => {
-  try {
-    const response = await api.get("/api/meus-itens");
-    return response;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+  return api.get("/api/meus-itens");
 };
 
-
 export const editarItem = async (itemId, formData) => {
-  try {
-    const respose = await api.put(`/api/item/${itemId}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      withCredentials: true,
-    });
-
-    return respose;
-  } catch (error) {
-    console.log(error.response);
-    throw error;
-  }
+  return api.put(`/api/item/${itemId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    withCredentials: true,
+  });
 };
 
 export const excluirItem = async (itemId) => {
-  try {
-    const response = await api.delete(`/api/item/${itemId}`);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error.response);
-    throw error;
-  }
+  return api.delete(`/api/item/${itemId}`);
 };

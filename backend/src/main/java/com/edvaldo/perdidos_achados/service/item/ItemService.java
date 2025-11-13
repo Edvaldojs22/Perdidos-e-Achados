@@ -1,8 +1,5 @@
 package com.edvaldo.perdidos_achados.service.item;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +19,8 @@ import com.edvaldo.perdidos_achados.models.dto.item.response.ItemResponseComplet
 import com.edvaldo.perdidos_achados.models.dto.item.response.ItemResponsePublicoDTO;
 import com.edvaldo.perdidos_achados.repository.item.ItemRepository;
 import com.edvaldo.perdidos_achados.service.image.ImagemService;
+import com.google.cloud.storage.Bucket;
+import com.google.firebase.cloud.StorageClient;
 
 import jakarta.validation.Valid;
 @Service
@@ -37,7 +36,7 @@ public class ItemService {
 
 
     public Item cadastrarItem( ItemFormDTO dto) throws IOException{
-        String imagemUrl = imagemService.salvarImagemLocal(dto.getImagem());
+        String imagemUrl = imagemService.salvarImagemFirebase(dto.getImagem());
         System.out.println("Url da imagem criada " + imagemUrl);
 
         Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
@@ -58,31 +57,38 @@ public class ItemService {
         
     }
 
-    public void deletarItemPorId (Long itemId, Long usuarioId){
-        Item item = itemRepository.findById(itemId)
-            .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
+  public void deletarItemPorId(Long itemId, Long usuarioId) {
+    Item item = itemRepository.findById(itemId)
+        .orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado"));
 
-         if(!item.getUsuario().getId().equals(usuarioId)) {
-                throw new AcessoNegadoException("Você não tem permissão para excluir esse item");
-        }
+    if (!item.getUsuario().getId().equals(usuarioId)) {
+        throw new AcessoNegadoException("Você não tem permissão para excluir esse item");
+    }
 
-        String imagemUrl = item.getImagemUrl();
-         // supondo que no banco guarda algo como "uploads/imagem123.jpg"
-         if (imagemUrl != null && !imagemUrl.isEmpty()) {
+    String imagemUrl = item.getImagemUrl();
+    if (imagemUrl != null && !imagemUrl.isEmpty()) {
         try {
-             String nomeImagem = imagemUrl.substring(imagemUrl.lastIndexOf("/") + 1);
+            String nomeImagem = imagemUrl.substring(imagemUrl.lastIndexOf("/") + 1);
+            int indexInterrogacao = nomeImagem.indexOf("?");
+            if (indexInterrogacao != -1) {
+                nomeImagem = nomeImagem.substring(0, indexInterrogacao);
+            }
 
-            Path path = Paths.get("C:\\estudos\\java\\projetos\\perdidos-achados\\backend\\uploads",nomeImagem);
+            Bucket bucket = StorageClient.getInstance().bucket();
+            boolean deletado = bucket.get(nomeImagem).delete();
 
-            Files.deleteIfExists(path);
-             System.out.println("🧹 Imagem deletada: " + path);
+            if (deletado) {
+                System.out.println("🧹 Imagem deletada do Firebase: " + nomeImagem);
+            } else {
+                System.err.println("⚠️ Imagem não encontrada no Firebase: " + nomeImagem);
+            }
         } catch (Exception e) {
-            System.err.println("Erro ao deletar imagem: " + e.getMessage());
+            System.err.println("Erro ao deletar imagem do Firebase: " + e.getMessage());
         }
     }
-        
-        itemRepository.delete(item);
-    }
+
+    itemRepository.delete(item);
+}
 
     public Item editarItemPorId(Long itemId, @Valid ItemEditDTO dto) throws IOException{
         Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
@@ -104,8 +110,10 @@ public class ItemService {
 
          // Se uma nova imagem foi enviada, salva e atualiza a URL
         if (dto.getImagem() != null && !dto.getImagem().isEmpty()) {
-        String novaImagemUrl = imagemService.salvarImagemLocal(dto.getImagem());
+        String novaImagemUrl = imagemService.salvarImagemFirebase(dto.getImagem());
         item.setImagemUrl(novaImagemUrl);
+        System.out.println("Nova imagem enviada: " + dto.getImagem().getOriginalFilename());
+
      }
 
         return itemRepository.save(item);

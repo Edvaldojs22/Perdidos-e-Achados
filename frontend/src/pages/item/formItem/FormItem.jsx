@@ -23,6 +23,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
   const [mostrarAviso, setMostrarAviso] = useState(false);
   const [erros, setErros] = useState({});
   const [active, setActive] = useState(false);
+  const [numeroCelular, setNumeroCelular] = useState("");
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -127,6 +128,8 @@ const FormItem = ({ modo = "criar", item = null }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const numero = localStorage.getItem("telefone");
+    setNumeroCelular(numero);
     if (!token) setMostrarAviso(true);
   }, []);
 
@@ -135,14 +138,20 @@ const FormItem = ({ modo = "criar", item = null }) => {
   }
 
   const handleExcluirItem = async () => {
+    setActive(false);
     try {
       const response = await excluirItem(item.id);
-      console.log(response.data);
-      showSuccess("Item excluído");
-      navigate("/perfil");
+
+      if (response.status === 200 || response.status === 204) {
+        showSuccess("Item excluído");
+        navigate("/perfil"); // ✅ só redireciona se deu certo
+      } else {
+        console.warn("Exclusão não retornou sucesso:", response.status);
+      }
     } catch (error) {
-      console.log(error.response);
-      showSuccess("Item excluído com sucesso");
+      console.error("Erro ao excluir:", error.response || error);
+      showSuccess("Erro ao excluir item");
+      // ❌ não redireciona em caso de erro
     }
   };
 
@@ -261,6 +270,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
         <div>
           <label htmlFor="pistaTelefone">Pista Telefone:</label>
           <input
+            list="telefone"
             name="pistaTelefone"
             type="text"
             placeholder={
@@ -272,6 +282,9 @@ const FormItem = ({ modo = "criar", item = null }) => {
             onChange={(e) => setTelefone(e.target.value)}
             required={!isEdicao}
           />
+          <datalist id="telefone">
+            <option value={numeroCelular} />
+          </datalist>
         </div>
         <div>
           <label htmlFor="recompensa">Recompensa</label>

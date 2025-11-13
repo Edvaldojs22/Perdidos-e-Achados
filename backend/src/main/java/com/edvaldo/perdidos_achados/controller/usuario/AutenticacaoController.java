@@ -66,7 +66,7 @@ public class AutenticacaoController {
             Usuario usuarioAutenticado = (Usuario) auth.getPrincipal();
             String token = tokenService.gerarToken(usuarioAutenticado);
 
-             return ResponseEntity.ok(new LoginResponseDTO(token,usuarioAutenticado.getId(),usuarioAutenticado.getNome()));
+             return ResponseEntity.ok(new LoginResponseDTO(token,usuarioAutenticado.getId(),usuarioAutenticado.getNome(), usuarioAutenticado.getContato()));
             
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha inválidos");

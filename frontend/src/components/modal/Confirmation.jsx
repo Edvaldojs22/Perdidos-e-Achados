@@ -6,7 +6,7 @@ const Confirmation = ({ text, handleExcluir, onCancel }) => {
       <div>
         <p>{text}</p>
         <div>
-          <button onClick={handleExcluir}>Confrimar</button>
+          <button type="button" onClick={handleExcluir}>Confrimar</button>
           <button onClick={onCancel}>Cancelar</button>
         </div>
       </div>

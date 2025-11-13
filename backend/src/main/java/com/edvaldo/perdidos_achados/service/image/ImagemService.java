@@ -1,38 +1,28 @@
 package com.edvaldo.perdidos_achados.service.image;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
-import java.awt.image.BufferedImage;
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.ImageOutputStream;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.firebase.cloud.StorageClient;
 
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+
 @Service
 public class ImagemService {
 
-    public String salvarImagemLocal(MultipartFile imagem) throws IOException {
-        String pasta = "uploads";
-        Files.createDirectories(Paths.get(pasta));
-
+    public String salvarImagemFirebase(MultipartFile imagem) throws IOException {
         String nomeArquivo = UUID.randomUUID() + "_" + imagem.getOriginalFilename();
-        Path caminho = Paths.get(pasta, nomeArquivo);
-
+        
         BufferedImage original = ImageIO.read(imagem.getInputStream());
-        if (original == null) {
-            throw new IOException("Arquivo enviado não é uma imagem válida.");
-        }
-
-        // Redimensiona para no máximo 1280x720 mantendo proporção
         BufferedImage redimensionada = Scalr.resize(
             original,
             Scalr.Method.QUALITY,
@@ -40,25 +30,16 @@ public class ImagemService {
             1280, 720
         );
 
-        // Comprime a imagem redimensionada para ~70% de qualidade
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-             ImageOutputStream ios = ImageIO.createImageOutputStream(baos)) {
+        
+          ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(redimensionada, "jpg", baos);
 
-            ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-            writer.setOutput(ios);
+        Bucket bucket = StorageClient.getInstance().bucket();
+        Blob blob = bucket.create(nomeArquivo, baos.toByteArray(), "image/jpeg");
 
-            ImageWriteParam param = writer.getDefaultWriteParam();
-            if (param.canWriteCompressed()) {
-                param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                param.setCompressionQuality(0.7f); // 70% de qualidade
-            }
+       return String.format("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
+    bucket.getName(),
+    URLEncoder.encode(nomeArquivo, StandardCharsets.UTF_8));
 
-            writer.write(null, new IIOImage(redimensionada, null, null), param);
-            writer.dispose();
-
-            Files.write(caminho, baos.toByteArray());
-        }
-
-        return "http://localhost:8080/uploads/" + nomeArquivo;
     }
 }

@@ -5,12 +5,12 @@ import { IoAddCircle } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { itensDoUsuario } from "../../api/itemApi";
 import ItemCard from "../../components/cardItem/ItemCard";
+import { showWarning } from "../../service/ToasTservice";
 
 const UserProfile = () => {
   const [itens, setItens] = useState([]);
   const navigate = useNavigate();
   const nome = localStorage.getItem("nome");
-  
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -23,7 +23,7 @@ const UserProfile = () => {
         const response = await itensDoUsuario();
         setItens(response.data);
       } catch (error) {
-        console.log(error);
+        showWarning(error.response.data);
       }
     };
     fetchItens();
@@ -45,7 +45,7 @@ const UserProfile = () => {
         <p>Meus Itens Postados</p>
         <div className={style.box_scroll}>
           {itens.length === 0 ? (
-            <p>Nenhum intem encontrado</p>
+            <p>Sem itens no momento</p>
           ) : (
             <div className={style.itens}>
               {itens.map((item, index) => (
