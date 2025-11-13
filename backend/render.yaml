@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: perdidos-achados
+    env: docker
+    buildCommand: ./mvnw clean package
+    startCommand: java -jar target/perdidos-achados-0.0.1-SNAPSHOT.jar
+    repo: https://github.com/Edvaldojs22/Perdidos-e-Achados
+    branch: main
+    plan: free
+    envVars:
+      - key: FIREBASE_CREDENTIALS_PATH
+        value: /etc/secrets/firebase-credencias.json
