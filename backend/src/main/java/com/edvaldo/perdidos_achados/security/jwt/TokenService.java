@@ -20,6 +20,9 @@ public class TokenService {
 
     @Value("${jwt.secret}")
     private String secret;
+
+    @Value("${jwt.expiracao-ms}")
+    private Long expiracaoMs;
   
 
     private Key getSigningKey() {
@@ -32,7 +35,7 @@ public class TokenService {
             .setIssuer("perdidos-achados-api")
             .setSubject(usuario.getEmail())
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 3600000L))
+            .setExpiration(new Date(System.currentTimeMillis() + expiracaoMs))
             .signWith(getSigningKey(), SignatureAlgorithm.HS256)
             .compact();
     }

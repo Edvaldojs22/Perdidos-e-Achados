@@ -1,7 +1,8 @@
 package com.edvaldo.perdidos_achados.security.config;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+
 
 import org.springframework.context.annotation.Configuration;
 
@@ -16,10 +17,8 @@ public class FirebaseConfig {
     
     @PostConstruct
     public void inicializarFirebase() throws IOException{
-        InputStream serviceAccount = getClass()
-            .getClassLoader()
-            .getResourceAsStream("firebase/firebase-credencias.json");
-
+        FileInputStream serviceAccount = new FileInputStream("firebase/firebase-credencias.json");
+     
         FirebaseOptions options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
             .setStorageBucket("perdidos-e-achados-2d103.firebasestorage.app") 
