@@ -16,8 +16,7 @@ import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class FirebaseConfig {
-   
-    
+
     @PostConstruct
     public void inicializarFirebase() throws IOException {
         InputStream serviceAccount;
@@ -25,11 +24,13 @@ public class FirebaseConfig {
         // Verifica se está rodando no Render com variável de ambiente
         String firebaseEnv = System.getenv("FIREBASE_CONFIG");
 
-        if (firebaseEnv != null && !firebaseEnv.isEmpty()) {
-            serviceAccount = new ByteArrayInputStream(firebaseEnv.getBytes(StandardCharsets.UTF_8));
+        if (firebaseEnv != null && !firebaseEnv.isBlank()) {
+            // Converte os \\n em \n reais
+            String jsonComQuebras = firebaseEnv.replace("\\n", "\n");
+            serviceAccount = new ByteArrayInputStream(jsonComQuebras.getBytes(StandardCharsets.UTF_8));
         } else {
             // Usa o arquivo local para desenvolvimento
-            serviceAccount = new FileInputStream("firebase/firebase-credencias.json");
+            serviceAccount = new FileInputStream("src/main/resources/firebase/firebase-credencias.json");
         }
 
         FirebaseOptions options = FirebaseOptions.builder()
@@ -39,7 +40,7 @@ public class FirebaseConfig {
 
         if (FirebaseApp.getApps().isEmpty()) {
             FirebaseApp.initializeApp(options);
-            System.out.println("Firebase inicializado com sucesso!");
+            System.out.println("✅ Firebase inicializado com sucesso!");
         }
     }
 }
