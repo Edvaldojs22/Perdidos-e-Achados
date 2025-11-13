@@ -1,7 +1,7 @@
 services:
   - type: web
     name: perdidos-achados
-    env: docker
+    env: linux
     buildCommand: ./mvnw clean package
     startCommand: java -jar target/perdidos-achados-0.0.1-SNAPSHOT.jar
     repo: https://github.com/Edvaldojs22/Perdidos-e-Achados
