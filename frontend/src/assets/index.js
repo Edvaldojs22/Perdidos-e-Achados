@@ -1,12 +1,12 @@
-import lupa from "./Lupa.png";
-import box from "./Box.png";
-import sherdog from "./Sherdog.png";
+import lupa from "./lupa.png";
+import box from "./box.png";
+import sherdog from "./sherdog.png";
 import sherdogSmell from "./SherdogSmell.png";
-import sherdogSearch from "./SherdogSearch.png";
+import sherdogSearch from "./sherdogSearch.png";
 import sherdogSelf from "./SherdogSelf.png";
-import sherdogForm from "./SherdogForm.png";
-import sherdogNew from "./SherdogNew.png";
-import sherdogError from "./SherdogError.png";
+import sherdogForm from "./sherdogForm.png";
+import sherdogNew from "./sherdogNew.png";
+import sherdogError from "./sherdogError.png";
 import sherdogWhats from "./SherdogWhats.png";
 
 export const images = {
