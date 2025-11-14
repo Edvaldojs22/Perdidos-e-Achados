@@ -27,9 +27,8 @@ const RegisterUser = () => {
         navgate("/");
       }, 2000);
     } catch (error) {
-      if (error.data) {
+      if (error.response?.data) {
         setErros(error.data);
-        console.log(erros);
       } else {
         console.error("Erro inesperado:", error);
       }

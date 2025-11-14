@@ -5,18 +5,13 @@ export const todoItens = async () => {
 };
 
 export const createItem = async (formData) => {
-  try {
-    const response = await api.post("/api/item/cadastrar", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+  const response = await api.post("/api/item/cadastrar", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
-    return response;
-  } catch (error) {
-    console.log(error.response);
-    throw error;
-  }
+  return response;
 };
 
 export const itemInfo = async (itemId) => {

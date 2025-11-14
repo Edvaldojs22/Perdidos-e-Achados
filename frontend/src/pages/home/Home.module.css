@@ -62,6 +62,7 @@ header input::placeholder {
   min-height: 500px;
   overflow-y: auto;
   margin-bottom: 10px;
+  position: relative;
 }
 .boxScroll::-webkit-scrollbar {
   height: 8px;

@@ -35,12 +35,20 @@ public class FirebaseConfig {
 
         FirebaseOptions options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-            .setStorageBucket("perdidos-e-achados-2d103.appspot.com")
-            .build();
+            .setStorageBucket("perdidos-e-achados-2d103.firebasestorage.app")
 
+            .build();
         if (FirebaseApp.getApps().isEmpty()) {
             FirebaseApp.initializeApp(options);
-            System.out.println("✅ Firebase inicializado com sucesso!");
+            System.out.println("Firebase inicializado com sucesso!");
         }
+
+         // Verifica o projectId após inicialização
+         String projectId = FirebaseApp.getInstance().getOptions().getProjectId();
+         System.out.println("Projeto Firebase: " + projectId);
+
     }
+
+
+    
 }

@@ -13,7 +13,7 @@ const FormEdit = () => {
         const response = await itemInfo(itemId);
         setItem(response.data);
       } catch (error) {
-        console.log(error);
+        console.log(error.response?.data);
       }
     };
 

@@ -6,6 +6,7 @@ import style from "./Home.module.css";
 import { BsSearch } from "react-icons/bs";
 import { todoItens } from "../../api/itemApi";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
+
 // import { FaArrowCircleLeft } from "react-icons/fa";
 
 const Home = () => {
@@ -87,7 +88,7 @@ const Home = () => {
       <section className={style.boxScroll}>
         <div className={style.boxItens}>
           {loading ? (
-            <p>Procurando itens...</p>
+            <p>Carregando intens</p>
           ) : erro ? (
             <p className={style.erro}>{erro}</p>
           ) : itensFiltrados.length === 0 ? (

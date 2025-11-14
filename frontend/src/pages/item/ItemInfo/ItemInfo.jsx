@@ -20,7 +20,7 @@ const ItemInfo = () => {
           setItem(response.data);
         } catch (error) {
           setMostrarAviso(true);
-          console.log(error);
+          console.log(error.response.data);
         }
       };
       fetchItem();

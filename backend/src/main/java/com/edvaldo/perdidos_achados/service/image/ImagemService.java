@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ImagemService {
 
     public String salvarImagemFirebase(MultipartFile imagem) throws IOException {
-        String nomeArquivo = UUID.randomUUID() + "_" + imagem.getOriginalFilename();
+        String nomeArquivo = UUID.randomUUID() + "_imagem.jpg";
         
         BufferedImage original = ImageIO.read(imagem.getInputStream());
         BufferedImage redimensionada = Scalr.resize(
@@ -31,15 +31,18 @@ public class ImagemService {
         );
 
         
-          ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(redimensionada, "jpg", baos);
 
         Bucket bucket = StorageClient.getInstance().bucket();
         Blob blob = bucket.create(nomeArquivo, baos.toByteArray(), "image/jpeg");
 
-       return String.format("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
-    bucket.getName(),
-    URLEncoder.encode(nomeArquivo, StandardCharsets.UTF_8));
+    
+      return String.format(
+         "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
+         bucket.getName(),
+         URLEncoder.encode(nomeArquivo, StandardCharsets.UTF_8)
+        );
 
     }
 }

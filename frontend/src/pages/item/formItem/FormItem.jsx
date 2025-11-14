@@ -8,6 +8,7 @@ import ButtonForm from "../../../components/button/ButtonForm";
 import { showSuccess } from "../../../service/ToasTservice";
 import { useNavigate } from "react-router-dom";
 import Confirmation from "../../../components/modal/Confirmation";
+import Loading from "../../../components/modal/Loading";
 
 const FormItem = ({ modo = "criar", item = null }) => {
   const isEdicao = modo === "editar";
@@ -24,6 +25,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
   const [erros, setErros] = useState({});
   const [active, setActive] = useState(false);
   const [numeroCelular, setNumeroCelular] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -76,6 +78,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
     }
 
     try {
+      setLoading(true);
       if (isEdicao) {
         await editarItem(item.id, formData);
         showSuccess(item.nome + " editado");
@@ -110,6 +113,8 @@ const FormItem = ({ modo = "criar", item = null }) => {
       } else {
         console.log("Erro inesperado:", err.message || err);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -189,6 +194,8 @@ const FormItem = ({ modo = "criar", item = null }) => {
         />
       </div>
 
+      <Loading img={images.sherdog} text={"Aguarde"} visible={loading} />
+
       <section>
         <h2>
           {isEdicao ? "Edite seu item" : "Preencha tudo para uma boa busca!"}
@@ -217,6 +224,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
             onChange={(e) => setDescricao(e.target.value)}
           />
         </div>
+
         <div>
           <label htmlFor="pistaCategoria">Pista Categoria:</label>
           <select
@@ -308,6 +316,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
           </button>
         )}
       </section>
+
       {mostrarAviso && (
         <ModalWarning
           text={
@@ -324,10 +333,12 @@ const FormItem = ({ modo = "criar", item = null }) => {
         />
       )}
 
-      <ButtonForm
-        text={isEdicao ? "Salvar" : "Postar"}
-        imgUrl={images.sherdogForm}
-      />
+      {!loading && (
+        <ButtonForm
+          text={isEdicao ? "Salvar" : "Postar"}
+          imgUrl={images.sherdogForm}
+        />
+      )}
     </form>
   );
 };
