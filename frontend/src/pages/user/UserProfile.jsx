@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { images } from "../../assets";
-import style from "./userProfile.module.css";
+import style from "./UserProfile.module.css";
 import { IoAddCircle } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { itensDoUsuario } from "../../api/itemApi";
