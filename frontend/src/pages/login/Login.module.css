@@ -5,9 +5,10 @@
   height: 100dvh;
   gap: 50px;
   font-size: 1.1rem;
+  position: r;
 }
 
-.form_login > div:first-child {
+.box_imgText {
   background-color: var(--laranja-queimado);
   display: flex;
   justify-content: center;
@@ -39,7 +40,7 @@
   max-width: 400px;
 }
 
-.form_login div:last-child {
+.box_imgH3 {
   color: var(--branco-puro);
   text-align: center;
   position: relative;
@@ -47,7 +48,7 @@
   margin-top: 50px;
 }
 
-.form_login div:last-child img {
+.box_imgH3 img {
   width: 50px;
   position: absolute;
   right: 20px;
@@ -92,4 +93,18 @@
   text-align: center;
   color: red;
   font-weight: 600;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  font-size: 18px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

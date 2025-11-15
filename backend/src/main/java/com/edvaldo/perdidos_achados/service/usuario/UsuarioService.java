@@ -28,7 +28,7 @@ public class UsuarioService  {
 
     public void deletarPorId(Long id){
         if(itemRepository.existsByUsuarioId(id)){
-            throw new UsuarioComItensException("Usuário possui itens cadastrados. Exclua os itens antes de excluir o usuário.");
+            throw new UsuarioComItensException("É preciso excluir os itens antes");
         }
         Usuario usuario = usuarioRepositoy.findById(id)
         .orElseThrow(()-> new UsuarioNaoEncontradoException("Usuário com ID " + id + " não encontrado"));
@@ -36,12 +36,10 @@ public class UsuarioService  {
     }
 
     public Usuario editarUsuario(Long id,@Valid UsuarioEditDTO dto){
-        Authentication authenticacao = SecurityContextHolder.getContext().getAuthentication();
-        Usuario usuario = (Usuario)  authenticacao.getPrincipal();
+        Usuario usuario = usuarioRepositoy.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-        if(!usuario.getId().equals(id)){
-            throw new AcessoNegadoException("Você não tem permissão para editar este usuário");
-        }
+    
         if (dto.getNome() != null) usuario.setNome(dto.getNome());
         if (dto.getNome() != null) usuario.setEmail(dto.getEmail());
         if (dto.getNome() != null) usuario.setNome(dto.getNome());

@@ -67,7 +67,7 @@ const Home = () => {
           <img className={style.sherdog} src={images.sherdog} alt="" />
         </div>
       </header>
-      <h2>Items Perdidos</h2>
+      <h2>Itens Perdidos</h2>
 
       <select
         className={style.select_setor}
@@ -88,7 +88,7 @@ const Home = () => {
       <section className={style.boxScroll}>
         <div className={style.boxItens}>
           {loading ? (
-            <p>Carregando intens</p>
+            <p>Carregando itens</p>
           ) : erro ? (
             <p className={style.erro}>{erro}</p>
           ) : itensFiltrados.length === 0 ? (

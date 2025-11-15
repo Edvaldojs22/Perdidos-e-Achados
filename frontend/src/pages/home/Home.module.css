@@ -3,7 +3,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: auto;
+  height: 100dvh;
+  position: relative;
 }
 
 header {
@@ -57,9 +58,10 @@ header input::placeholder {
 .boxScroll {
   width: 100%;
   padding: 7px;
+  padding-top: 30px;
   height: auto;
   height: 70vh;
-  min-height: 500px;
+  min-height: 400px;
   overflow-y: auto;
   margin-bottom: 10px;
   position: relative;
@@ -83,8 +85,6 @@ header input::placeholder {
   align-items: center;
   overflow: hidden;
   gap: 10px;
-
-  height: 100%;
 }
 
 .sherdogSmell,
@@ -172,9 +172,7 @@ main button {
 
 .boxMenu {
   opacity: 0;
-  transform: translateX(100%);
   transition: opacity 0.3s ease, transform 0.3s ease;
-  pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: end;
@@ -183,36 +181,19 @@ main button {
   position: absolute;
   bottom: 40px;
   right: 10px;
-  z-index: 2;
+  z-index: 3;
 }
 
 .boxMenu.ativo {
   opacity: 1;
-  transform: translateX(0);
-  pointer-events: auto;
 }
 
 .boxMenu p {
-  opacity: 0;
-  transform: translateX(20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
   cursor: pointer;
 }
 
 .boxMenu p:hover {
   background-color: var(--laranja-escuro);
-}
-
-.boxMenu.ativo .item1 {
-  transition-delay: 0.1s;
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.boxMenu.ativo .item2 {
-  transition-delay: 0.2s;
-  opacity: 1;
-  transform: translateX(0);
 }
 
 .boxMenu p {

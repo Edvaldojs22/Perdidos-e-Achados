@@ -10,5 +10,6 @@ public enum Categoria {
     BRINQUEDO,
     MEDICAMENTO,
     JOIA,
+    ANIMAL,
     OUTRO
 }

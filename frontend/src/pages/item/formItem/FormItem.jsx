@@ -26,6 +26,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
   const [active, setActive] = useState(false);
   const [numeroCelular, setNumeroCelular] = useState("");
   const [loading, setLoading] = useState(false);
+  const [text, setText] = useState("");
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -79,6 +80,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
 
     try {
       setLoading(true);
+      setText("Salvando");
       if (isEdicao) {
         await editarItem(item.id, formData);
         showSuccess(item.nome + " editado");
@@ -87,6 +89,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
         if (!imagem) {
           alert("Selecione uma imagem");
         }
+        setText("Postando");
         await createItem(formData);
         showSuccess("Item postado com Sucesso!");
       }
@@ -104,6 +107,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
       if (err?.response) {
         console.log("Erro ao cadastrar:", err.response.data);
         setErros(err.response.data);
+        setTelefone("");
         if (
           err.response.data.mensagem ==
           "Esta rota requer um Token JWT válido (Bearer Token)."
@@ -144,9 +148,10 @@ const FormItem = ({ modo = "criar", item = null }) => {
 
   const handleExcluirItem = async () => {
     setActive(false);
+    setLoading(true);
+    setText("Excluindo");
     try {
       const response = await excluirItem(item.id);
-
       if (response.status === 200 || response.status === 204) {
         showSuccess("Item excluído");
         navigate("/perfil"); // ✅ só redireciona se deu certo
@@ -157,6 +162,8 @@ const FormItem = ({ modo = "criar", item = null }) => {
       console.error("Erro ao excluir:", error.response || error);
       showSuccess("Erro ao excluir item");
       // ❌ não redireciona em caso de erro
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -188,13 +195,13 @@ const FormItem = ({ modo = "criar", item = null }) => {
           name="imagem"
           id="imagem"
           ref={inputRef}
-          accept="image/*"
+          accept=".jpg,.jpeg,.png"
           onChange={handleChange}
           required={!isEdicao}
         />
       </div>
 
-      <Loading img={images.sherdog} text={"Aguarde"} visible={loading} />
+      <Loading img={images.sherdog} text={text} visible={loading} />
 
       <section>
         <h2>
@@ -244,6 +251,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
             <option value="BRINQUEDO">Brinquedo</option>
             <option value="MEDICAMENTO">Medicamento</option>
             <option value="JOIA">Joia</option>
+            <option value="ANIMAL">Animal</option>
             <option value="OUTRO">Outro</option>
           </select>
         </div>

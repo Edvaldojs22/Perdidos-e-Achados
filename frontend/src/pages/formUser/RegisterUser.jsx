@@ -4,16 +4,19 @@ import { registerUser } from "../../api/auth";
 import { useState } from "react";
 import { showSuccess } from "../../service/ToasTservice";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/modal/Loading";
 
 const RegisterUser = () => {
   const [nome, setNome] = useState(null);
   const [email, setEmail] = useState(null);
   const [senha, setSenha] = useState(null);
   const [telefone, setTelefone] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [erros, setErros] = useState({});
   const navgate = useNavigate();
 
   const handleRegister = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       await registerUser({
@@ -28,10 +31,13 @@ const RegisterUser = () => {
       }, 2000);
     } catch (error) {
       if (error.response?.data) {
-        setErros(error.data);
+        console.log(error.response.data);
+        setErros(error.response.data);
       } else {
         console.error("Erro inesperado:", error);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -82,6 +88,7 @@ const RegisterUser = () => {
         </div>
       </section>
       <button type="submit">Cadastrar</button>
+      <Loading img={images.sherdog} text={"Cadastrando"} visible={loading} />
     </form>
   );
 };

@@ -35,7 +35,7 @@ const ItemInfo = () => {
         <h2>{item.nome}</h2>
 
         <div className={style.box_imgs}>
-          <img src={images.sherdogSeacrch} alt="dog info" />
+          <img src={images.sherdogSearch} alt="dog info" />
           <img src={item.imagemUrl} alt="" />
         </div>
         <p className={style.status}>{item.status}</p>

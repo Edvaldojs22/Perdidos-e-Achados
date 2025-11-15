@@ -5,34 +5,61 @@ import { IoAddCircle } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { itensDoUsuario } from "../../api/itemApi";
 import ItemCard from "../../components/cardItem/ItemCard";
-import { showWarning } from "../../service/ToasTservice";
 import Loading from "../../components/modal/Loading";
+import { excluirUser } from "../../api/user";
+import Confirmation from "../../components/modal/Confirmation";
+import { showSuccess, showWarning } from "../../service/ToasTservice";
 
 const UserProfile = () => {
   const [itens, setItens] = useState([]);
+  const [active, setActive] = useState(false);
+  const [textModal, setTextModal] = useState("");
   const navigate = useNavigate();
   const nome = localStorage.getItem("nome");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("nome");
+    localStorage.removeItem("telefone");
     navigate("/login");
   };
 
   useEffect(() => {
+    setLoading(true);
+    setTextModal("Buscando itens");
     const fetchItens = async () => {
       try {
-        setLoading(true);
         const response = await itensDoUsuario();
         setItens(response.data);
       } catch (error) {
-        showWarning(error.response.data);
+        console.log(error.response.data);
       } finally {
         setLoading(false);
       }
     };
     fetchItens();
   }, []);
+
+  const hadleExcluir = async () => {
+    setActive(false);
+    setTextModal("Excluindo");
+    setLoading(true);
+    try {
+      await excluirUser();
+      showSuccess("Usuario excluido");
+      localStorage.removeItem("token");
+      localStorage.removeItem("nome");
+      localStorage.removeItem("telefone");
+      showSuccess("Usuario excluido");
+      navigate("/");
+    } catch (error) {
+      console.log(error.response.data);
+      showWarning(error.response.data);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section className={style.profile}>
@@ -42,8 +69,8 @@ const UserProfile = () => {
           <p>{nome}</p>
           <img src={images.sherdogNew} alt="" />
         </div>
-
         <button onClick={logout}>Sair</button>
+        <button onClick={() => setActive(true)}>Excluir usuario</button>
       </div>
 
       <div className={style.box_itens}>
@@ -51,8 +78,8 @@ const UserProfile = () => {
         <div className={style.box_scroll}>
           {loading ? (
             <Loading
-              text={"Busando itens"}
-              img={images.sherdogSmell}
+              text={textModal}
+              img={images.sherdog}
               visible={loading}
               top={true}
             />
@@ -81,6 +108,14 @@ const UserProfile = () => {
         className={style.btn_new}
         onClick={() => navigate("/novo-item")}
       />
+
+      {active && (
+        <Confirmation
+          text={"Deseja excluir sua conta?"}
+          handleExcluir={hadleExcluir}
+          onCancel={() => setActive(false)}
+        />
+      )}
     </section>
   );
 };
