@@ -1,12 +1,6 @@
 package com.edvaldo.perdidos_achados.service.usuario;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-
 import com.edvaldo.perdidos_achados.entity.Usuario;
-import com.edvaldo.perdidos_achados.exception.item.AcessoNegadoException;
 import com.edvaldo.perdidos_achados.exception.usuario.UsuarioComItensException;
 import com.edvaldo.perdidos_achados.exception.usuario.UsuarioNaoEncontradoException;
 import com.edvaldo.perdidos_achados.models.dto.usuario.request.UsuarioEditDTO;

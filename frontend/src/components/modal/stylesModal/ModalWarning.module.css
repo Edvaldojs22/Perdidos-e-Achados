@@ -12,9 +12,6 @@
   align-items: center;
   padding: 0 20px;
 }
-.box_none {
-  display: none;
-}
 
 .box_warning > div {
   background-color: var(--branco-puro);

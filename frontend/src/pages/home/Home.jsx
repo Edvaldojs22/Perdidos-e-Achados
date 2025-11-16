@@ -6,8 +6,9 @@ import style from "./Home.module.css";
 import { BsSearch } from "react-icons/bs";
 import { todoItens } from "../../api/itemApi";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
-
-// import { FaArrowCircleLeft } from "react-icons/fa";
+import { itensMock } from "../../mocks/itensMock";
+import Confirmation from "../../components/modal/Confirmation";
+import { showSuccess } from "../../service/ToasTservice";
 
 const Home = () => {
   const [itens, setItens] = useState([]);
@@ -16,6 +17,7 @@ const Home = () => {
   const [filtroNome, setFiltroNome] = useState("");
   const [filtraSetor, setFiltraSetor] = useState("");
   const [menuAberto, setMenuAberto] = useState(false);
+  const [active, setActive] = useState(false);
 
   const navigate = useNavigate();
 
@@ -31,14 +33,29 @@ const Home = () => {
     return nomeMatch && setorMatch;
   });
 
+  const handleSetarDadosMocados = () => {
+    setItens(itensMock);
+    setActive(false);
+    console.log(itensMock);
+  };
+
   useEffect(() => {
     const fetchItens = async () => {
+      const timeout = setTimeout(() => {
+        setActive(true);
+      }, 10000);
+
       try {
         const response = await todoItens();
+        clearTimeout(timeout);
+        setActive(false);
+        showSuccess("Dados caregados");
         setItens(response.data);
       } catch (err) {
+        clearInterval(timeout);
         console.error("Erro ao buscar itens:", err);
         setErro("Não foi possível carregar os itens.");
+        setItens(itensMock); // fallback em caso de erro
       } finally {
         setLoading(false);
       }
@@ -118,6 +135,18 @@ const Home = () => {
           Perfil
         </p>
       </div>
+
+      {active && (
+        <Confirmation
+          text={`⚠️ O servidor pode estar reiniciando neste momento, por isso os dados podem demorar a aparecer.  
+                Como estou utilizando o plano gratuito do Render, o backend pode levar até 3 minutos para ficar disponível.  
+                Você prefere continuar navegando com dados de exemplo (mockados) ou aguardar os dados reais?`}
+          handle={handleSetarDadosMocados}
+          onCancel={() => setActive(false)}
+          textBtn1={"Usar"}
+          textBtn2={"Aguardar"}
+        />
+      )}
 
       <div
         className={style.iconMenu}
