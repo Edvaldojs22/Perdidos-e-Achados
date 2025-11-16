@@ -43,7 +43,7 @@ const Home = () => {
     const fetchItens = async () => {
       const timeout = setTimeout(() => {
         setActive(true);
-      }, 10000);
+      }, 5000);
 
       try {
         const response = await todoItens();
