@@ -336,7 +336,7 @@ const FormItem = ({ modo = "criar", item = null }) => {
       {active && (
         <Confirmation
           text={"Deseja excluir?"}
-          handleExcluir={handleExcluirItem}
+          handle={handleExcluirItem}
           onCancel={() => setActive(false)}
         />
       )}

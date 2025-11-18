@@ -42,6 +42,11 @@ const UserProfile = () => {
   }, []);
 
   const hadleExcluir = async () => {
+    if (localStorage.getItem("id") === "48") {
+      showWarning("Esta conta é para teste, não pode ser excluida!");
+      setActive(false);
+      return;
+    }
     setActive(false);
     setTextModal("Excluindo");
     setLoading(true);
@@ -112,7 +117,9 @@ const UserProfile = () => {
       {active && (
         <Confirmation
           text={"Deseja excluir sua conta?"}
-          handleExcluir={hadleExcluir}
+          handle={hadleExcluir}
+          textBtn1={"Comfirmar"}
+          textBtn2={"Cancelar"}
           onCancel={() => setActive(false)}
         />
       )}

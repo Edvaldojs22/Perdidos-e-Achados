@@ -5,6 +5,7 @@ main {
   align-items: center;
   height: 100dvh;
   position: relative;
+  width: 100%;
 }
 
 header {
@@ -121,7 +122,6 @@ main h2 {
 main > div {
   position: relative;
   width: 100%;
-  max-width: 500px;
   margin: 0 auto;
   margin-bottom: 10px;
 }

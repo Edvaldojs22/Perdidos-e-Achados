@@ -108,3 +108,56 @@
     transform: rotate(360deg);
   }
 }
+
+.box_usuario {
+  position: absolute;
+  bottom: 0;
+  background-color: var(--laranja-queimado);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  font-size: 0.6rem;
+}
+
+.box_usuario span {
+  color: black;
+}
+
+.box_usuario p:nth-child(1) {
+  color: var(--branco-puro);
+  text-align: center;
+}
+
+.box_usuario .email,
+.senha {
+  background-color: var(--branco-puro);
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 5px 10px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.box_usuario button {
+  background-color: var(--azul-claro);
+  border: none;
+  padding: 3px;
+  border-radius: 7px;
+  color: var(--branco-puro);
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all;
+  width: 100px;
+  align-self: center;
+}
+@media (min-width: 1000px) {
+  .box_usuario p:nth-child(1) {
+    font-size: 1.2rem;
+  }
+}

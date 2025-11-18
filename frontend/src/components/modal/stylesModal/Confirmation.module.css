@@ -11,6 +11,11 @@
   padding: 0 10px;
 }
 
+.box_confirmation p {
+  text-align: center;
+  text-align: start;
+}
+
 .box_confirmation > div {
   display: flex;
   gap: 20px;
@@ -20,6 +25,7 @@
   background-color: var(--branco-puro);
   border-radius: 20px;
   padding: 20px;
+  max-width: 500px;
 }
 
 .box_confirmation > div div {

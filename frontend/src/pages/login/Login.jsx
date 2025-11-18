@@ -32,6 +32,11 @@ const Login = () => {
     }
   };
 
+  const handleSetarUsuario = () => {
+    setEmail("dev.test@gmail.com");
+    setSenha("1234567");
+  };
+
   return (
     <form className={style.form_login} onSubmit={handleLogin}>
       <div className={style.box_imgText}>
@@ -67,6 +72,20 @@ const Login = () => {
           <img src={images.sherdogNew} alt="" />
         </div>
       </section>
+
+      <div className={style.box_usuario}>
+        <p>Use este usuário caso não queira criar uma conta agora</p>
+        <p className={style.email}>
+          <span>E-mail: </span> dev.test@gmail.com
+        </p>
+        <p className={style.senha}>
+          {" "}
+          <span>Senha: </span>1234567
+        </p>
+        <button type="button" onClick={() => handleSetarUsuario()}>
+          Seta
+        </button>
+      </div>
     </form>
   );
 };

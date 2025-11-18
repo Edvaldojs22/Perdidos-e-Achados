@@ -6,10 +6,12 @@ const Confirmation = ({ text, handle, onCancel, textBtn1, textBtn2 }) => {
       <div>
         <p>{text}</p>
         <div>
-          <button type="button" onClick={handle}>
-            {textBtn1 || "Comfirmar"}
-          </button>
-          <button onClick={onCancel}>{textBtn2 || "Cancelar"} </button>
+          {textBtn1 && (
+            <button type="button" onClick={handle}>
+              {textBtn1}
+            </button>
+          )}
+          {textBtn2 && <button onClick={onCancel}>{textBtn2} </button>}
         </div>
       </div>
     </div>

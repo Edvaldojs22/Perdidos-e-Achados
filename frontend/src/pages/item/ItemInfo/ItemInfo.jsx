@@ -5,11 +5,13 @@ import style from "./ItemInfo.module.css";
 import { useEffect, useState } from "react";
 import { itemInfo } from "../../../api/itemApi";
 import ModalWarning from "../../../components/modal/ModalWarning";
+import Confirmation from "../../../components/modal/Confirmation";
 
 const ItemInfo = () => {
   const [item, setItem] = useState("");
   const { itemId } = useParams();
   const [mostrarAviso, setMostrarAviso] = useState(false);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,6 +30,10 @@ const ItemInfo = () => {
       setMostrarAviso(true);
     }
   }, []);
+
+  const handleAviso = () => {
+    setActive(true);
+  };
 
   return (
     <section className={style.box_itemInfo}>
@@ -68,10 +74,21 @@ const ItemInfo = () => {
         </div>
       </div>
 
+      {active && (
+        <Confirmation
+          onCancel={() => setActive(false)}
+          textBtn2={"Fechar"}
+          text={
+            "No projeto real, este botão abriria o WhatsApp do dono do item. Aqui está desativado apenas para demonstração."
+          }
+        />
+      )}
+
       <ButtonForm
         typeBtn={"button"}
         text={"Entrar em contato"}
         imgUrl={images.sherdogWhats}
+        hanlde={handleAviso}
       />
       {mostrarAviso && (
         <ModalWarning
