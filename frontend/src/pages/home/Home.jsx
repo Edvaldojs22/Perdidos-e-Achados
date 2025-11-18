@@ -37,7 +37,6 @@ const Home = () => {
       const timeout = setTimeout(() => {
         setActive(true);
       }, 8000);
-
       try {
         const response = await todoItens();
         clearTimeout(timeout);
