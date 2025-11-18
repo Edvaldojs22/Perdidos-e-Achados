@@ -27,11 +27,12 @@ const UserProfile = () => {
 
   useEffect(() => {
     setLoading(true);
-    setTextModal("Buscando itens");
+    setTextModal("Buscando");
     const fetchItens = async () => {
       try {
         const response = await itensDoUsuario();
         setItens(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log(error.response.data);
       } finally {
@@ -84,7 +85,7 @@ const UserProfile = () => {
           {loading ? (
             <Loading
               text={textModal}
-              img={images.sherdog}
+              img={images.sherdogSmell}
               visible={loading}
               top={true}
             />

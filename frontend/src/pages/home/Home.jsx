@@ -8,6 +8,7 @@ import { todoItens } from "../../api/itemApi";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import Confirmation from "../../components/modal/Confirmation";
 import { showSuccess } from "../../service/ToasTservice";
+import Loading from "../../components/modal/Loading";
 
 const Home = () => {
   const [itens, setItens] = useState([]);
@@ -95,7 +96,11 @@ const Home = () => {
       <section className={style.boxScroll}>
         <div className={style.boxItens}>
           {loading ? (
-            <p>Carregando itens</p>
+            <Loading
+              img={images.sherdogSmell}
+              visible={loading}
+              text={"Procurando"}
+            />
           ) : erro ? (
             <p className={style.erro}>{erro}</p>
           ) : itensFiltrados.length === 0 ? (
